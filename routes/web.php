@@ -6,21 +6,19 @@ use App\Http\Controllers\Admin\DocumentController as AdminDocumentController;
 use App\Http\Controllers\Admin\DepartmentController as AdminDepartmentController;
 use App\Http\Controllers\DocumentController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Public Routes
+Route::get('/', [DocumentController::class, 'index'])->name('public.documents.index');
+Route::get('departments/{department}', [DocumentController::class, 'show'])->name('public.documents.show');
+Route::get('documents/download/{filename}', [DocumentController::class, 'download'])->name('public.documents.download');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/', [DocumentController::class, 'index'])->name('public.documents.index');
-    Route::get('departments/{department}', [DocumentController::class, 'show'])->name('public.documents.show');
-    Route::get('documents/download/{filename}', [DocumentController::class, 'download'])->name('public.documents.download');
 });
 
 // ใน routes/web.php (ส่วนของ Admin Middleware)
