@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\DocumentController;
+use App\Http\Controllers\Admin\DocumentController as AdminDocumentController;
+use App\Http\Controllers\DocumentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,12 +17,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/', [DocumentController::class, 'index'])->name('public.documents.index');
+Route::get('documents/{document}', [DocumentController::class, 'show'])->name('public.documents.show');
+Route::get('documents/download/{filename}', [DocumentController::class, 'download'])->name('public.documents.download');
 });
 
 // ใน routes/web.php (ส่วนของ Admin Middleware)
 Route::middleware(['auth'])->group(function () {
     // Route สำหรับ Admin (CRUD เอกสาร)
-    Route::resource('admin/documents', DocumentController::class);
+    Route::resource('admin/documents', AdminDocumentController::class);
 
     // Route สำหรับ CRUD ฝ่ายงาน (optional)
     // ถ้าคุณยังไม่ได้สร้าง DepartmentController ให้ Comment Out บรรทัดนี้ไว้ก่อน
