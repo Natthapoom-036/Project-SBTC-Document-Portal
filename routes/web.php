@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DocumentController as AdminDocumentController;
+use App\Http\Controllers\Admin\DepartmentController as AdminDepartmentController;
 use App\Http\Controllers\DocumentController;
 
 Route::get('/', function () {
@@ -10,7 +11,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -18,8 +19,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/', [DocumentController::class, 'index'])->name('public.documents.index');
-Route::get('documents/{document}', [DocumentController::class, 'show'])->name('public.documents.show');
-Route::get('documents/download/{filename}', [DocumentController::class, 'download'])->name('public.documents.download');
+    Route::get('departments/{department}', [DocumentController::class, 'show'])->name('public.documents.show');
+    Route::get('documents/download/{filename}', [DocumentController::class, 'download'])->name('public.documents.download');
 });
 
 // ใน routes/web.php (ส่วนของ Admin Middleware)
@@ -27,9 +28,7 @@ Route::middleware(['auth'])->group(function () {
     // Route สำหรับ Admin (CRUD เอกสาร)
     Route::resource('admin/documents', AdminDocumentController::class);
 
-    // Route สำหรับ CRUD ฝ่ายงาน (optional)
-    // ถ้าคุณยังไม่ได้สร้าง DepartmentController ให้ Comment Out บรรทัดนี้ไว้ก่อน
-    // Route::resource('admin/departments', DepartmentController::class);
+    Route::resource('admin/departments', AdminDepartmentController::class);
 });
 
 require __DIR__.'/auth.php';

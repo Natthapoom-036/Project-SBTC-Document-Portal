@@ -9,29 +9,29 @@ use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
+    /**
+     * Show list of all departments.
+     */
     public function index()
     {
-        $documents = Document::with('department')->get(); // โหลดเอกสารพร้อมข้อมูลฝ่ายงาน
-        $departments = Department::all();
-        return view('public.index', compact('documents', 'departments'));
+        // Fetch departments with document count
+        $departments = Department::withCount('documents')->get();
+        return view('public.index', compact('departments'));
     }
 
-    public function show(Document $document)
+    /**
+     * Show documents for a specific department.
+     */
+    public function show(Department $department)
     {
-        // For now, just show the index or redirect to download if intended.
-        // Or implement a preview page. For this task, I'll redirect to download
-        // or just return the index view with a specific focus if needed.
-        // Let's make it simple and just show the file info or download it directly?
-        // The route list implies a 'show' page. Let's create a basic return for now
-        // to prevent crashes, but usually show might preview the PDF.
-        
-        return view('public.index', compact('document')); // Re-using index for simplicity unless a show view is requested.
-        // Actually, the user might just want to download. 
-        // But let's stick to the user's snippet logic usually, but the user snippet DID NOT have show.
-        // The user ADDED Route::get('documents/{document}', [DocumentController::class, 'show'])
-        // So I must provide 'show'.
+        // Load documents for this department
+        $documents = $department->documents()->latest()->get();
+        return view('public.department_docs', compact('department', 'documents'));
     }
 
+    /**
+     * Download a file.
+     */
     public function download($filename)
     {
         $path = 'public/documents/' . $filename;
