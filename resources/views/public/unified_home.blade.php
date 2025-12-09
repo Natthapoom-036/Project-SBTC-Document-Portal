@@ -17,11 +17,21 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex items-center">
-                        <a href="{{ url('/') }}" class="text-xl font-bold text-indigo-600">DMS Portal</a>
+                        <a href="{{ url('/') }}" class="text-xl font-bold text-indigo-600 hover:text-indigo-700 transition">
+                            <span class="flex items-center">
+                                <svg class="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                DMS Portal
+                            </span>
+                        </a>
                     </div>
                     <div class="flex items-center">
-                        <a href="{{ route('login') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
-                            Admin Login
+                        <a href="{{ route('login') }}" class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 border-2 border-red-700 rounded-lg font-bold text-base text-white uppercase tracking-wider shadow-2xl hover:shadow-red-500/50 transform hover:scale-110 transition duration-200 ease-in-out animate-pulse">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                            </svg>
+                            🔐 ADMIN LOGIN
                         </a>
                     </div>
                 </div>
