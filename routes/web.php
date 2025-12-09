@@ -6,27 +6,33 @@ use App\Http\Controllers\Admin\DocumentController as AdminDocumentController;
 use App\Http\Controllers\Admin\DepartmentController as AdminDepartmentController;
 use App\Http\Controllers\DocumentController;
 
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Main Route - Unified for both Public and Admin
+Route::get('/', [DocumentController::class, 'index'])->name('home');
 
 // Public Routes
-Route::get('/', [DocumentController::class, 'index'])->name('public.documents.index');
-Route::get('departments/{department}', [DocumentController::class, 'show'])->name('public.documents.show');
-Route::get('documents/download/{filename}', [DocumentController::class, 'download'])->name('public.documents.download');
+Route::get('departments/{department}', [DocumentController::class, 'show'])->name('departments.show');
+Route::get('documents/download/{filename}', [DocumentController::class, 'download'])->name('documents.download');
 
+// Authenticated Routes
 Route::middleware('auth')->group(function () {
+    // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-// ใน routes/web.php (ส่วนของ Admin Middleware)
-Route::middleware(['auth'])->group(function () {
-    // Route สำหรับ Admin (CRUD เอกสาร)
-    Route::resource('admin/documents', AdminDocumentController::class);
-
-    Route::resource('admin/departments', AdminDepartmentController::class);
+    
+    // Document CRUD Actions
+    Route::get('documents/create', [AdminDocumentController::class, 'create'])->name('documents.create');
+    Route::post('documents', [AdminDocumentController::class, 'store'])->name('documents.store');
+    Route::get('documents/{document}/edit', [AdminDocumentController::class, 'edit'])->name('documents.edit');
+    Route::put('documents/{document}', [AdminDocumentController::class, 'update'])->name('documents.update');
+    Route::delete('documents/{document}', [AdminDocumentController::class, 'destroy'])->name('documents.destroy');
+    
+    // Department CRUD Actions
+    Route::get('departments/create', [AdminDepartmentController::class, 'create'])->name('departments.create');
+    Route::post('departments', [AdminDepartmentController::class, 'store'])->name('departments.store');
+    Route::get('departments/{department}/edit', [AdminDepartmentController::class, 'edit'])->name('departments.edit');
+    Route::put('departments/{department}', [AdminDepartmentController::class, 'update'])->name('departments.update');
+    Route::delete('departments/{department}', [AdminDepartmentController::class, 'destroy'])->name('departments.destroy');
 });
 
 require __DIR__.'/auth.php';

@@ -42,7 +42,7 @@ class DocumentController extends Controller
             'filename' => $filename,
         ]);
 
-        return redirect()->route('admin.documents.index')->with('success', 'เพิ่มเอกสารเรียบร้อยแล้ว');
+        return redirect()->route('home')->with('success', 'เพิ่มเอกสารเรียบร้อยแล้ว');
     }
 
     public function destroy(Document $document)
@@ -55,6 +55,6 @@ class DocumentController extends Controller
         // 2. ลบข้อมูลจากฐานข้อมูล
         $document->delete();
 
-        return redirect()->route('admin.documents.index')->with('success', 'ลบเอกสารเรียบร้อยแล้ว');
+        return redirect()->route('home')->with('success', 'ลบเอกสารเรียบร้อยแล้ว');
     }
 }

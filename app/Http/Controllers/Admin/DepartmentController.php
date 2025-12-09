@@ -36,7 +36,7 @@ class DepartmentController extends Controller
 
         Department::create($request->all());
 
-        return redirect()->route('admin.departments.index')
+        return redirect()->route('home')
                          ->with('success', 'Department created successfully.');
     }
 
@@ -67,7 +67,7 @@ class DepartmentController extends Controller
 
         $department->update($request->all());
 
-        return redirect()->route('admin.departments.index')
+        return redirect()->route('home')
                          ->with('success', 'Department updated successfully.');
     }
 
@@ -79,7 +79,7 @@ class DepartmentController extends Controller
         // Check if has documents? Cascade delete is set in migration, so it's fine.
         $department->delete();
 
-        return redirect()->route('admin.departments.index')
+        return redirect()->route('home')
                          ->with('success', 'Department deleted successfully.');
     }
 }
