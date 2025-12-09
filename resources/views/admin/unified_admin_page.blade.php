@@ -32,23 +32,37 @@
             <div id="content-documents" class="tab-content">
                 <!-- Upload Document Form -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-                    <div class="p-6 bg-gray-50 border-b border-gray-200">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Upload New Document</h3>
+                    <div class="p-6 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                            Upload New Document
+                        </h3>
                         <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <div>
-                                    <label for="title" class="block text-sm font-medium text-gray-700">Document Title</label>
-                                    <input type="text" name="title" id="title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
+                                    <label for="title" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Document Title <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" name="title" id="title" 
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" 
+                                           placeholder="Enter document title" 
+                                           required>
                                     @error('title')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
 
                                 <div>
-                                    <label for="department_id" class="block text-sm font-medium text-gray-700">Department</label>
-                                    <select name="department_id" id="department_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                                        <option value="">Select Department</option>
+                                    <label for="department_id" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Department <span class="text-red-500">*</span>
+                                    </label>
+                                    <select name="department_id" id="department_id" 
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" 
+                                            required>
+                                        <option value="">-- Select Department --</option>
                                         @foreach($departments as $dept)
                                             <option value="{{ $dept->id }}">{{ $dept->name }}</option>
                                         @endforeach
@@ -59,16 +73,27 @@
                                 </div>
 
                                 <div>
-                                    <label for="document_file" class="block text-sm font-medium text-gray-700">PDF File</label>
-                                    <input type="file" name="document_file" id="document_file" accept=".pdf" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" required>
+                                    <label for="document_file" class="block text-sm font-medium text-gray-700 mb-1">
+                                        PDF File <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="file" name="document_file" id="document_file" accept=".pdf" 
+                                           class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" 
+                                           required>
                                     @error('document_file')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror
+                                    <p class="text-xs text-gray-500 mt-1">Max size: 10MB</p>
                                 </div>
                             </div>
 
-                            <div class="mt-4">
-                                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded">
+                            <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
+                                <button type="reset" class="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition duration-150 ease-in-out">
+                                    Clear Form
+                                </button>
+                                <button type="submit" class="inline-flex items-center px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-150 ease-in-out transform hover:scale-105">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                    </svg>
                                     Upload Document
                                 </button>
                             </div>
@@ -126,23 +151,38 @@
             <div id="content-departments" class="tab-content hidden">
                 <!-- Create Department Form -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-                    <div class="p-6 bg-gray-50 border-b border-gray-200">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Create New Department</h3>
+                    <div class="p-6 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            Create New Department
+                        </h3>
                         <form action="{{ route('departments.store') }}" method="POST">
                             @csrf
-                            <div class="flex gap-4 items-end">
-                                <div class="flex-grow">
-                                    <label for="dept_name" class="block text-sm font-medium text-gray-700">Department Name</label>
-                                    <input type="text" name="name" id="dept_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                                    @error('name')
-                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                <div>
-                                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded">
-                                        Create Department
-                                    </button>
-                                </div>
+                            <div class="mb-4">
+                                <label for="dept_name" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Department Name <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" name="name" id="dept_name" 
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm" 
+                                       placeholder="Enter department name (e.g., IT Department, HR Department)" 
+                                       required>
+                                @error('name')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
+                                <button type="reset" class="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition duration-150 ease-in-out">
+                                    Clear Form
+                                </button>
+                                <button type="submit" class="inline-flex items-center px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-150 ease-in-out transform hover:scale-105">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                    </svg>
+                                    Create Department
+                                </button>
                             </div>
                         </form>
                     </div>
