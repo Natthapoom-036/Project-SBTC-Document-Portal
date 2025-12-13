@@ -54,4 +54,18 @@ class DocumentController extends Controller
         // คืนค่าไฟล์ให้เบราว์เซอร์ดาวน์โหลด
         return Storage::download($path, $filename);
     }
+
+    /**
+     * View a file inline.
+     */
+    public function viewFile($filename)
+    {
+        $path = 'public/documents/' . $filename;
+
+        if (!Storage::exists($path)) {
+            abort(404);
+        }
+
+        return Storage::response($path, $filename);
+    }
 }

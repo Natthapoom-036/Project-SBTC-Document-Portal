@@ -12,6 +12,7 @@ Route::get('/', [DocumentController::class, 'index'])->name('home');
 // Public Routes
 Route::get('departments/{department}', [DocumentController::class, 'show'])->name('departments.show');
 Route::get('documents/download/{filename}', [DocumentController::class, 'download'])->name('documents.download');
+Route::get('documents/view/{filename}', [DocumentController::class, 'viewFile'])->name('documents.view');
 
 // Authenticated Routes
 Route::middleware('auth')->group(function () {

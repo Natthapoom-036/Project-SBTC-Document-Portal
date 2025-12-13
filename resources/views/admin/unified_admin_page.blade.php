@@ -125,7 +125,11 @@
                                         @foreach($documents as $doc)
                                             <tr>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $doc->id }}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{{ $doc->title }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                                    <a href="{{ route('documents.view', $doc->filename) }}" target="_blank" class="text-indigo-600 hover:text-indigo-900 hover:underline">
+                                                        {{ $doc->title }}
+                                                    </a>
+                                                </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $doc->department->name }}</td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $doc->filename }}</td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $doc->created_at->format('Y-m-d') }}</td>

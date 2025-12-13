@@ -69,7 +69,9 @@
                                             @foreach($documents as $doc)
                                                 <tr class="hover:bg-gray-50 transition-colors duration-150">
                                                     <td class="px-6 py-4 whitespace-nowrap">
-                                                        <div class="text-sm font-medium text-gray-900">{{ $doc->title }}</div>
+                                                        <a href="{{ route('documents.view', $doc->filename) }}" target="_blank" class="text-sm font-medium text-indigo-600 hover:text-indigo-900 hover:underline">
+                                                            {{ $doc->title }}
+                                                        </a>
                                                         <div class="text-xs text-gray-500">{{ $doc->filename }}</div>
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
