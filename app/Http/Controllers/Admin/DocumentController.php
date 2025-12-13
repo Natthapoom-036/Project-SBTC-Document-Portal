@@ -57,4 +57,43 @@ class DocumentController extends Controller
 
         return redirect()->route('home')->with('success', 'ลบเอกสารเรียบร้อยแล้ว');
     }
+
+    public function edit(Document $document)
+    {
+        $departments = Department::all();
+        return view('admin.documents.edit', compact('document', 'departments'));
+    }
+
+    public function update(Request $request, Document $document)
+    {
+        $request->validate([
+            'title' => 'required|max:255',
+            'department_id' => 'required|exists:departments,id',
+            'document_file' => 'nullable|file|mimes:pdf|max:10240', // File is optional on update
+        ]);
+
+        // 1. Update basic info
+        $document->title = $request->title;
+        $document->department_id = $request->department_id;
+
+        // 2. Handle file upload if present
+        if ($request->hasFile('document_file')) {
+            // Delete old file
+            if (Storage::exists('public/documents/' . $document->filename)) {
+                Storage::delete('public/documents/' . $document->filename);
+            }
+
+            // Store new file
+            $file = $request->file('document_file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/documents', $filename);
+            
+            // Update filename in model
+            $document->filename = $filename;
+        }
+
+        $document->save();
+
+        return redirect()->route('home')->with('success', 'แก้ไขเอกสารเรียบร้อยแล้ว');
+    }
 }
