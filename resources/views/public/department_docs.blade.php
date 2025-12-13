@@ -45,9 +45,9 @@
             <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="mb-6 flex items-center justify-between">
-                         <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Documents for {{ $department->name }}</h1>
+                         <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">เอกสารสำหรับ {{ $department->name }}</h1>
                          <a href="{{ url('/') }}" class="text-indigo-600 hover:text-indigo-900 flex items-center">
-                             &larr; Back to Departments
+                             &larr; กลับสู่หน้าแรก
                          </a>
                     </div>
 
@@ -60,9 +60,9 @@
                                     <table class="min-w-full divide-y divide-gray-200">
                                         <thead class="bg-gray-50">
                                             <tr>
-                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Document Title</th>
-                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uploaded At</th>
-                                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ชื่อเอกสาร</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">วันที่อัปโหลด</th>
+                                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">การดำเนินการ</th>
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
@@ -78,8 +78,8 @@
                                                         {{ $doc->created_at->format('d M Y, H:i') }}
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                        <a href="{{ route('documents.download', $doc->filename) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
-                                                            Download
+                                                        <a href="{{ route('documents.download', $doc->filename) }}">
+                                                            ดาวน์โหลด
                                                         </a>
                                                     </td>
                                                 </tr>

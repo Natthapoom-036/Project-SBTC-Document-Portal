@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document Management System</title>
     <!-- Fonts -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="resources/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -29,11 +29,8 @@
                         </a>
                     </div>
                     <div class="flex items-center">
-                        <a href="{{ route('login') }}" class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 border-2 border-red-700 rounded-lg font-bold text-base text-white uppercase tracking-wider shadow-2xl hover:shadow-red-500/50 transform hover:scale-110 transition duration-200 ease-in-out animate-pulse">
-                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-                            </svg>
-                            🔐 ADMIN LOGIN
+                        <a href="{{ route('login') }}" class="login-btn">
+                            🔐เข้าสู่ระบบ
                         </a>
                     </div>
                 </div>
@@ -42,24 +39,25 @@
 
         <!-- Main Content -->
         <main class="flex-grow">
+    
             <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="text-center mb-10">
-                        <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Department List</h1>
-                        <p class="mt-4 text-lg text-gray-500">Select a department to view documents.</p>
+                        <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">ยินดีต้อนรับสู่ระบบ</h1>
+                        <p class="mt-4 text-lg text-gray-500">ที่นี่จะแสดงเอกสารในแต่ละฝ่ายแต่ละงานให้ผู้ใช้สามารถเลือก Downloads ได้เลย</p>
                     </div>
 
                     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                         <div class="p-6">
                             @if($departments->isEmpty())
-                                <p class="text-center text-gray-500 py-4">No departments found.</p>
+                                <p class="text-center text-gray-500 py-4">ไม่พบข้อมูล</p>
                             @else
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     @foreach($departments as $dept)
                                         <a href="{{ route('departments.show', $dept->id) }}" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50 hover:shadow-lg transition duration-200">
                                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{{ $dept->name }}</h5>
                                             <p class="font-normal text-gray-700">
-                                                {{ $dept->documents_count }} Documents
+                                                {{ $dept->documents_count }} เอกสาร
                                             </p>
                                         </a>
                                     @endforeach
