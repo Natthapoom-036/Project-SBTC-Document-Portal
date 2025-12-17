@@ -4,39 +4,79 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document Management System</title>
+    <style>
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+}
+
+.title h2 {
+  font-size: 20px;
+  color: #1d4ed8;
+}
+
+.title p {
+  font-size: 13px;
+  color: #555;
+}
+
+.login-btn {
+  background-color: #1d4ed8;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background-color: #2563eb;
+}
+    </style>
     <!-- Fonts -->
-    <link rel="stylesheet" href="resources/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
 </head>
 <body class="font-sans antialiased bg-gray-50 text-gray-900">
     <div class="min-h-screen flex flex-col">
-        <!-- Navigation -->
-        <nav class="bg-white border-b border-gray-100 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
-                    <div class="flex items-center">
-                        <a href="{{ url('/') }}" class="text-xl font-bold text-indigo-600 hover:text-indigo-700 transition">
-                            <span class="flex items-center">
-                                <svg class="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                                DMS Portal
-                            </span>
-                        </a>
-                    </div>
-                    <div class="flex items-center">
-                        <a href="{{ route('login') }}" class="login-btn">
+        
+        <!-- Header -->
+
+  <header class="header">
+    <div class="logo-section">
+      <img src="img/sbtclogo.jpg" alt="Logo" class="logo">
+      <div class="title">
+        <h2>ระบบงานเอกสาร วิทยาลัยเทคนิคสิงห์บุรี</h2>
+        <p>Singburi Technical College Document Portal</p>
+      </div>
+    </div>
+    <a href="{{ route('login') }}" class="login-btn">
                             🔐เข้าสู่ระบบ
                         </a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
+  </header>
+        
         <!-- Main Content -->
         <main class="flex-grow">
     
