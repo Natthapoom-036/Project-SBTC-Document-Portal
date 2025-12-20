@@ -6,8 +6,12 @@ use App\Http\Controllers\Admin\DocumentController as AdminDocumentController;
 use App\Http\Controllers\Admin\DepartmentController as AdminDepartmentController;
 use App\Http\Controllers\DocumentController;
 
+
 // Main Route - Unified for both Public and Admin
 Route::get('/', [DocumentController::class, 'index'])->name('home');
+
+// Division Routes
+Route::get('divisions/{division}', [DocumentController::class, 'listDepartments'])->name('divisions.show');
 
 // Public Routes
 Route::get('departments/{department}', [DocumentController::class, 'show'])->name('departments.show');

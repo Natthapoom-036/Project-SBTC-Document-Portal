@@ -12,4 +12,9 @@ class Document extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function division()
+    {
+        return $this->belongsTo(Division::class);
+    }
 }

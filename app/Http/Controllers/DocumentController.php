@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Document;
 use App\Models\Department;
+use App\Models\Division;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+
 
 class DocumentController extends Controller
 {
@@ -23,9 +25,9 @@ class DocumentController extends Controller
             return view('admin.unified_admin_page', compact('documents', 'departments'));
         } else {
             // User is not logged in - Load Public Data
-            $departments = Department::withCount('documents')->get();
+            $divisions = Division::all();
             
-            return view('public.unified_home', compact('departments'));
+            return view('public.unified_home', compact('divisions'));
         }
     }
 
@@ -67,5 +69,14 @@ class DocumentController extends Controller
         }
 
         return Storage::response($path, $filename);
+    }
+
+    public function listDepartments(Division $division)
+    {
+        // ดึงหน่วยงานที่สังกัดฝ่ายนี้ พร้อมนับจำนวนเอกสาร
+        $departments = $division->departments()->withCount('documents')->get();
+
+        // ส่งไปหน้า View ใหม่ (ที่คุณกำลังจะสร้างในขั้นตอนต่อไป)
+        return view('public.division_departments', compact('division', 'departments'));
     }
 }

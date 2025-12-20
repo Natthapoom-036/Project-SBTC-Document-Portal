@@ -1,120 +1,325 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="th">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document Management System</title>
-    <style>
-/* Header */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 40px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>งานเอกสาร วิทยาลัยเทคนิคสิงห์บุรี</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-.logo-section {
-  display: flex;
-  align-items: center;
-}
+  <style>
+    /* --- CSS ของคุณ (นำมาใส่ตรงนี้เพื่อให้โหลดแน่นอน) --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", "Sarabun", sans-serif; /* เพิ่ม Sarabun เพื่อรองรับภาษาไทยสวยๆ */
+    }
 
-.logo {
-  width: 50px;
-  height: 50px;
-  margin-right: 15px;
-}
+    body {
+      background-color: #f6f9fc;
+      color: #333;
+    }
 
-.title h2 {
-  font-size: 20px;
-  color: #1d4ed8;
-}
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
 
-.title p {
-  font-size: 13px;
-  color: #555;
-}
+    .logo-section {
+      display: flex;
+      align-items: center;
+    }
 
-.login-btn {
-  background-color: #1d4ed8;
-  color: #fff;
-  border: none;
-  padding: 8px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 15px;
-  transition: 0.3s;
-}
+    .logo {
+      width: 50px;
+      height: 50px;
+      margin-right: 15px;
+      object-fit: contain; /* เพิ่มกันรูปเบี้ยว */
+    }
 
-.login-btn:hover {
-  background-color: #2563eb;
-}
-    </style>
-    <!-- Fonts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    .title h2 {
+      font-size: 20px;
+      color: #1d4ed8;
+      margin-bottom: 2px;
+    }
+
+    .title p {
+      font-size: 13px;
+      color: #555;
+    }
+
+    .login-btn {
+      background-color: #1d4ed8;
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.3s;
+      text-decoration: none; /* ลบขีดเส้นใต้ link */
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .login-btn:hover {
+      background-color: #2563eb;
+    }
+
+    /* Main Section */
+    .main {
+      text-align: center;
+      margin: 60px auto;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 40vh;
+    }
     
+    .main h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 50px;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    /* Card Layout */
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: stretch;
+      gap: 30px;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 30px 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      flex: 1 1 220px;
+      max-width: 250px; /* ขยายหน่อยให้ใส่คำบรรยายพอ */
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      text-decoration: none; /* กัน link มีขีดเส้นใต้ */
+      color: inherit;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+    
+    .card .icon {
+        font-size: 40px;
+        margin-bottom: 15px;
+        color: #1d4ed8; /* กำหนดสีไอคอนให้เข้าธีม */
+    }
+    
+    .card h3 {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+        color: #1d4ed8;
+    }
+    
+    .card p {
+        font-size: 0.9rem;
+        color: #666;
+        line-height: 1.4;
+    }
+
+    /* Quick Info Section */
+    .info-section {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 60px;
+      margin-bottom: 80px;
+    }
+
+    .info-container {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      padding: 40px 30px;
+      max-width: 900px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .info-container h2 {
+      font-size: 20px;
+      margin-bottom: 30px;
+      color: #222;
+    }
+
+    .info-cards {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 60px;
+      flex-wrap: wrap;
+    }
+
+    .info-card {
+      flex: 1 1 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .icon-box {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      color: #fff;
+      font-size: 24px;
+    }
+
+    .icon-box.blue { background-color: #3b82f6; }
+    .icon-box.green { background-color: #34d399; }
+    .icon-box.purple { background-color: #a855f7; }
+
+    .info-card h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .count {
+      font-size: 20px;
+      font-weight: bold;
+      color: #1d4ed8;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 15px;
+      margin-top: 50px;
+      background-color: #ffffff;
+      border-top: 1px solid #ddd;
+      color: #444;
+      font-size: 14px;
+    }
+  </style>
 </head>
-<body class="font-sans antialiased bg-gray-50 text-gray-900">
-    <div class="min-h-screen flex flex-col">
-        
-        <!-- Header -->
+<body>
 
   <header class="header">
     <div class="logo-section">
-      <img src="img/sbtclogo.jpg" alt="Logo" class="logo">
+      <img src="{{ asset('image/sbtclogo.jpg') }}" alt="Logo" class="logo">
       <div class="title">
         <h2>ระบบงานเอกสาร วิทยาลัยเทคนิคสิงห์บุรี</h2>
         <p>Singburi Technical College Document Portal</p>
       </div>
     </div>
-    <a href="{{ route('login') }}" class="login-btn">
-                            🔐เข้าสู่ระบบ
-                        </a>
-  </header>
-        
-        <!-- Main Content -->
-        <main class="flex-grow">
     
-            <div class="py-12">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="text-center mb-10">
-                        <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">ยินดีต้อนรับสู่ระบบ</h1>
-                        <p class="mt-4 text-lg text-gray-500">ที่นี่จะแสดงเอกสารในแต่ละฝ่ายแต่ละงานให้ผู้ใช้สามารถเลือก Downloads ได้เลย</p>
-                    </div>
+    @if (Route::has('login'))
+        @auth
+            <a href="{{ url('/') }}" class="login-btn">
+                <i class="fas fa-user-circle"></i> Dashboard
+            </a>
+        @else
+            <a href="{{ route('login') }}" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+        @endauth
+    @endif
+  </header>
 
-                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                        <div class="p-6">
-                            @if($departments->isEmpty())
-                                <p class="text-center text-gray-500 py-4">ไม่พบข้อมูล</p>
-                            @else
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    @foreach($departments as $dept)
-                                        <a href="{{ route('departments.show', $dept->id) }}" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50 hover:shadow-lg transition duration-200">
-                                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{{ $dept->name }}</h5>
-                                            <p class="font-normal text-gray-700">
-                                                {{ $dept->documents_count }} เอกสาร
-                                            </p>
-                                        </a>
-                                    @endforeach
-                                </div>
-                            @endif
-                        </div>
-                    </div>
+  <main class="main">
+    <h1>ยินดีต้อนรับสู่ระบบ</h1>
+    <p class="subtitle">
+      ที่นี่จะแสดงเอกสารในแต่ละฝ่ายแต่ละงานให้ผู้ใช้สามารถเลือก Downloads ได้เลย
+    </p>
+
+    <div class="card-container">
+        {{-- ตรวจสอบว่ามีข้อมูลส่งมาไหม --}}
+        @if(isset($divisions) && $divisions->count() > 0)
+            {{-- วนลูปสร้างการ์ดจาก Database --}}
+            @foreach($divisions as $div)
+            <div class="card" onclick="window.location.href='{{ route('divisions.show', $div->id) }}'">
+                <div class="icon">
+                    {{-- ดึงไอคอนจาก DB (ถ้าไม่มีใช้ Folder เป็นค่าเริ่มต้น) --}}
+                    <i class="{{ $div->icon_class ?? 'fas fa-folder' }}"></i>
                 </div>
+                <h3>{{ $div->name }}</h3>
+                <p>{{ $div->description ?? 'คลิกเพื่อดูรายละเอียด' }}</p>
             </div>
-        </main>
-
-        <!-- Footer -->
-        <footer class="bg-white border-t border-gray-100 py-6">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <p class="text-center text-sm text-gray-500">© {{ date('Y') }} Document Management System. All rights reserved.</p>
-            </div>
-        </footer>
+            @endforeach
+        @else
+            {{-- กรณีไม่มีข้อมูล หรือ Database ว่าง --}}
+            <p style="color: red;">ไม่พบข้อมูลฝ่ายงาน (กรุณาเพิ่มข้อมูลใน Database)</p>
+        @endif
     </div>
+  </main>
+
+  <section class="info-section">
+    <div class="info-container">
+      <h2>Quick Information</h2>
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="icon-box blue">
+            <i class="fas fa-book"></i>
+          </div>
+          <h3>จำนวนเอกสารทั้งหมด</h3>
+          {{-- ดึงค่าจำนวนเอกสารจริงจากระบบ --}}
+          <p class="count">{{ isset($totalDocs) ? $totalDocs : 0 }}</p>
+        </div>
+
+        <div class="info-card">
+          <div class="icon-box green">
+            <i class="fas fa-user"></i>
+          </div>
+          <h3>ยอดผู้ชมทั้งหมด</h3>
+          <p class="count">0</p>
+        </div>
+
+        <div class="info-card">
+          <div class="icon-box purple">
+            <i class="fas fa-clipboard"></i>
+          </div>
+          <h3>ยอดดาวน์โหลดทั้งหมด</h3>
+          <p class="count">0</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    © {{ date('Y') }} วิทยาลัยเทคนิคสิงห์บุรี | Document Management System
+  </footer>
+
 </body>
 </html>
