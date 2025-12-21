@@ -11,22 +11,33 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // 1. ตาราง Users
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            
+            // --- Custom Columns ---
+            $table->string('role')->default('user');
+            
+            // 🔥 แก้ไขตรงนี้: เอา constrained('departments') ออก เพื่อป้องกัน Error หาตารางไม่เจอ
+            $table->foreignId('department_id')->nullable(); 
+            // ---------------------
+
             $table->rememberToken();
             $table->timestamps();
         });
 
+        // 2. ตาราง Password Reset Tokens
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
 
+        // 3. ตาราง Sessions (ต้องมี!)
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();

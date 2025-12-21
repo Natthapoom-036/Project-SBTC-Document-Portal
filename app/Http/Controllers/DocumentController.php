@@ -10,7 +10,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
-
 class DocumentController extends Controller
 {
     /**
@@ -18,19 +17,28 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        // 1. ดึงข้อมูลเอกสาร
-        $documents = Document::with('department')->latest()->get();
-        
-        // 2. ดึงข้อมูลหน่วยงาน
-        $departments = Department::with('division')->get();
-        
-        // 3. ดึงข้อมูลฝ่ายงาน (ตัวที่ Error คือตัวนี้หายไป!)
-        $divisions = Division::all(); 
-        
-        // 4. ดึงข้อมูลผู้ใช้ (เผื่อหน้า Admin ต้องใช้)
-        $users = User::all();
+        $user = auth()->user();
 
-        // 5. ส่งตัวแปรทั้งหมดไปที่หน้า View (อย่าลืมใส่ชื่อตัวแปรใน compact)
+        // 1. เช็คสิทธิ์: ถ้าเป็น Super Admin (role = 1 หรือไม่มีสังกัด) ให้เห็นทั้งหมด
+        if ($user->role === 'super_admin' || is_null($user->department_id)) {
+            $documents = Document::with('department')->latest()->get();
+            $departments = Department::with('division')->get();
+        } else {
+            // 2. ถ้าเป็น Admin หน่วยงาน ให้เห็นแค่เอกสารของหน่วยงานตัวเองเท่านั้น!
+            $documents = Document::where('department_id', $user->department_id)
+                             ->with('department')
+                             ->latest()
+                             ->get();
+        
+            // กรองรายชื่อหน่วยงานให้เลือกได้แค่ของตัวเอง
+            $departments = Department::where('id', $user->department_id)->get();
+        }
+
+        // ข้อมูลส่วนกลางที่ต้องใช้
+        $divisions = Division::all();
+        $users = User::with('department')->get();
+
+        // ส่งข้อมูลไปหน้า View
         return view('admin.unified_admin_page', compact('documents', 'departments', 'divisions', 'users'));
     }
 
@@ -39,7 +47,6 @@ class DocumentController extends Controller
      */
     public function show(Department $department)
     {
-        // Load documents for this department
         $documents = $department->documents()->latest()->get();
         return view('public.department_docs', compact('department', 'documents'));
     }
@@ -50,13 +57,7 @@ class DocumentController extends Controller
     public function download($filename)
     {
         $path = 'public/documents/' . $filename;
-
-        // ตรวจสอบว่าไฟล์มีอยู่จริงหรือไม่
-        if (!Storage::exists($path)) {
-            abort(404);
-        }
-
-        // คืนค่าไฟล์ให้เบราว์เซอร์ดาวน์โหลด
+        if (!Storage::exists($path)) abort(404);
         return Storage::download($path, $filename);
     }
 
@@ -66,20 +67,13 @@ class DocumentController extends Controller
     public function viewFile($filename)
     {
         $path = 'public/documents/' . $filename;
-
-        if (!Storage::exists($path)) {
-            abort(404);
-        }
-
+        if (!Storage::exists($path)) abort(404);
         return Storage::response($path, $filename);
     }
 
     public function listDepartments(Division $division)
     {
-        // ดึงหน่วยงานที่สังกัดฝ่ายนี้ พร้อมนับจำนวนเอกสาร
         $departments = $division->departments()->withCount('documents')->get();
-
-        // ส่งไปหน้า View ใหม่ (ที่คุณกำลังจะสร้างในขั้นตอนต่อไป)
         return view('public.division_departments', compact('division', 'departments'));
     }
 }

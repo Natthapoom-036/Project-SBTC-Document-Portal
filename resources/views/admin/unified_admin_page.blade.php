@@ -234,6 +234,15 @@
             <input type="text" name="name" placeholder="Name" class="border-gray-300 rounded-md shadow-sm w-full" required>
         </div>
         <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">สังกัดหน่วยงาน</label> 
+            <select name="department_id" class="border-gray-300 rounded-md shadow-sm w-full">
+                <option value="">-- ไม่ระบุ (Super Admin) --</option>
+                @foreach($departments as $dept)
+                    <option value="{{ $dept->id }}">{{ $dept->name }} ({{ $dept->division->name }})</option>
+                @endforeach
+    </select>
+</div>
+        <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">อีเมล (Login) <span class="text-red-500">*</span></label>
             <input type="email" name="email" placeholder="Email" class="border-gray-300 rounded-md shadow-sm w-full" required>
         </div>
