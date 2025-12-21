@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; // <--- 1. ต้องเพิ่มบรรทัดนี้ครับ
 
 class DepartmentController extends Controller
 {
@@ -22,6 +23,10 @@ class DepartmentController extends Controller
      */
     public function create()
     {
+        // 2. ป้องกันคนรู้ Link แอบเข้าหน้าสร้าง
+        if (Auth::user()->role !== 'super_admin') {
+            abort(403, 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้');
+        }
         return view('admin.departments.create');
     }
 
@@ -30,14 +35,20 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
+        // 3. ป้องกันการยิง API มาสร้าง
+        if (Auth::user()->role !== 'super_admin') {
+            abort(403, 'คุณไม่มีสิทธิ์เพิ่มหน่วยงาน');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255|unique:departments,name',
+            'division_id' => 'required|exists:divisions,id', // ควรเช็คว่าเลือกฝ่ายงานหรือยัง
         ]);
 
         Department::create($request->all());
 
-        return redirect()->route('home')
-                         ->with('success', 'Department created successfully.');
+        // เปลี่ยนเป็น back() เพื่อให้ยังคงอยู่ในหน้า Admin
+        return back()->with('success', 'เพิ่มหน่วยงานเรียบร้อยแล้ว');
     }
 
     /**
@@ -45,7 +56,7 @@ class DepartmentController extends Controller
      */
     public function show(string $id)
     {
-        // Not used in admin panel usually, index shows summary
+        // ไม่ได้ใช้งานใน Admin Panel
     }
 
     /**
@@ -53,6 +64,9 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
+        if (Auth::user()->role !== 'super_admin') {
+            abort(403, 'คุณไม่มีสิทธิ์แก้ไขข้อมูลนี้');
+        }
         return view('admin.departments.edit', compact('department'));
     }
 
@@ -61,14 +75,19 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
+        // 4. ป้องกันการแก้ไข
+        if (Auth::user()->role !== 'super_admin') {
+            abort(403, 'คุณไม่มีสิทธิ์แก้ไขข้อมูลนี้');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255|unique:departments,name,' . $department->id,
+            // division_id อาจจะไม่ต้อง validate ถ้าไม่ได้ให้แก้
         ]);
 
         $department->update($request->all());
 
-        return redirect()->route('home')
-                         ->with('success', 'Department updated successfully.');
+        return back()->with('success', 'อัปเดตข้อมูลหน่วยงานเรียบร้อยแล้ว');
     }
 
     /**
@@ -76,10 +95,13 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        // Check if has documents? Cascade delete is set in migration, so it's fine.
+        // 5. ป้องกันการลบ
+        if (Auth::user()->role !== 'super_admin') {
+            abort(403, 'คุณไม่มีสิทธิ์ลบข้อมูลนี้');
+        }
+
         $department->delete();
 
-        return redirect()->route('home')
-                         ->with('success', 'Department deleted successfully.');
+        return back()->with('success', 'ลบหน่วยงานเรียบร้อยแล้ว');
     }
 }
