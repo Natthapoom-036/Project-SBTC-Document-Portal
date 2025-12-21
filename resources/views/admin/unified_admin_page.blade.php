@@ -109,6 +109,12 @@
                                                 <td class="px-6 py-4 text-gray-500">{{ $doc->department->name ?? '-' }}</td>
                                                 <td class="px-6 py-4 text-sm font-medium">
                                                     <a href="{{ route('documents.download', $doc->filename) }}" class="text-blue-600 hover:text-blue-900 mr-3">ดาวน์โหลด</a>
+                                                    {{-- อนุญาตให้ Super Admin หรือ เจ้าของไฟล์ แก้ไขได้ --}}
+                                                    @if(Auth::user()->role === 'super_admin' || Auth::id() === $doc->user_id)
+                                                        <a href="{{ route('documents.edit', $doc->id) }}" class="text-yellow-600 hover:text-yellow-900 mr-2">
+                                                            <i class="fas fa-edit"></i> แก้ไข
+                                                        </a>
+                                                    @endif
                                                     <form action="{{ route('documents.destroy', $doc->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Delete?');">
                                                         @csrf @method('DELETE')
                                                         <button type="submit" class="text-red-600 hover:text-red-900">ลบ</button>
