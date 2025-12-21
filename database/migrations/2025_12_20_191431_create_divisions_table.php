@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
-        $table->id();
-        $table->string('name')->unique(); // ชื่อฝ่ายงาน
-        $table->foreignId('division_id')->constrained('divisions')->onDelete('cascade');
-        $table->timestamps();
-    });
+        Schema::create('divisions', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('divisions');
     }
 };

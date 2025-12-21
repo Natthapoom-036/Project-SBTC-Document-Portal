@@ -24,6 +24,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+   // 1. จัดการ Users (เพิ่ม/ลบ ผู้ใช้งาน)
+    Route::post('users', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
+    Route::delete('users/{user}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
+
+    // 2. จัดการ Divisions (เพิ่ม/ลบ ฝ่ายงาน) -> ตัวที่ทำให้ Error ตอนนี้คือบรรทัดนี้ครับ
+    Route::post('divisions', [App\Http\Controllers\Admin\DivisionController::class, 'store'])->name('divisions.store');
+    Route::delete('divisions/{division}', [App\Http\Controllers\Admin\DivisionController::class, 'destroy'])->name('divisions.destroy');
     
     // Document CRUD Actions
     Route::get('documents/create', [AdminDocumentController::class, 'create'])->name('documents.create');

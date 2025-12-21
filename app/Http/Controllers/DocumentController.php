@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Division;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,18 +18,20 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        if (Auth::check()) {
-            // User is logged in - Load Admin Data
-            $documents = Document::with('department')->latest()->get();
-            $departments = Department::withCount('documents')->get();
-            
-            return view('admin.unified_admin_page', compact('documents', 'departments'));
-        } else {
-            // User is not logged in - Load Public Data
-            $divisions = Division::all();
-            
-            return view('public.unified_home', compact('divisions'));
-        }
+        // 1. ดึงข้อมูลเอกสาร
+        $documents = Document::with('department')->latest()->get();
+        
+        // 2. ดึงข้อมูลหน่วยงาน
+        $departments = Department::with('division')->get();
+        
+        // 3. ดึงข้อมูลฝ่ายงาน (ตัวที่ Error คือตัวนี้หายไป!)
+        $divisions = Division::all(); 
+        
+        // 4. ดึงข้อมูลผู้ใช้ (เผื่อหน้า Admin ต้องใช้)
+        $users = User::all();
+
+        // 5. ส่งตัวแปรทั้งหมดไปที่หน้า View (อย่าลืมใส่ชื่อตัวแปรใน compact)
+        return view('admin.unified_admin_page', compact('documents', 'departments', 'divisions', 'users'));
     }
 
     /**
