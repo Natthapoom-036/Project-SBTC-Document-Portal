@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'department_id' => null, // ไม่สังกัดฝ่าย
         ]);
 
-        // 2. สร้างข้อมูล 4 ฝ่ายงานหลัก (ตัวอย่าง)
+        // 2. สร้างข้อมูลฝ่ายงานหลัก (ตัวอย่าง)
         $divisions = [
             ['name' => 'ฝ่ายบริหารทรัพยากร', 'icon_class' => 'fas fa-building'],
             ['name' => 'ฝ่ายวิชาการ', 'icon_class' => 'fas fa-book'],

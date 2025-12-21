@@ -286,32 +286,40 @@
     <div class="info-container">
       <h2>Quick Information</h2>
       <div class="info-cards">
+        
+        {{-- การ์ด 1: จำนวนเอกสาร --}}
         <div class="info-card">
           <div class="icon-box blue">
             <i class="fas fa-book"></i>
           </div>
           <h3>จำนวนเอกสารทั้งหมด</h3>
-          <p class="count">{{ isset($totalDocs) ? $totalDocs : 0 }}</p>
+          {{-- แก้เลข 0 เป็นตัวแปรนี้ --}}
+          <p class="count">{{ number_format($totalDocs) }}</p>
         </div>
 
+        {{-- การ์ด 2: ยอดเข้าชม --}}
         <div class="info-card">
           <div class="icon-box green">
             <i class="fas fa-user"></i>
           </div>
           <h3>ยอดผู้ชมทั้งหมด</h3>
-          <p class="count">0</p>
+          {{-- แก้เลข 0 เป็นตัวแปรนี้ --}}
+          <p class="count">{{ number_format($totalViews) }}</p>
         </div>
 
+        {{-- การ์ด 3: ยอดดาวน์โหลด --}}
         <div class="info-card">
           <div class="icon-box purple">
             <i class="fas fa-clipboard"></i>
           </div>
           <h3>ยอดดาวน์โหลดทั้งหมด</h3>
-          <p class="count">0</p>
+          {{-- แก้เลข 0 เป็นตัวแปรนี้ --}}
+          <p class="count">{{ number_format($totalDownloads) }}</p>
         </div>
+
       </div>
     </div>
-  </section>
+</section>
 
   <footer class="footer">
     © {{ date('Y') }} วิทยาลัยเทคนิคสิงห์บุรี | Document Management System

@@ -53,11 +53,23 @@ class DocumentController extends Controller
      * Download a file.
      */
     public function download($filename)
-    {
-        $path = 'public/documents/' . $filename;
-        if (!Storage::exists($path)) abort(404);
-        return Storage::download($path, $filename);
+{
+    // 1. หาเอกสารใน Database
+    $document = Document::where('filename', $filename)->first();
+    $path = 'public/documents/' . $filename;
+
+    if (!Storage::exists($path)) {
+        abort(404);
     }
+
+    // 2. --- เพิ่มตรงนี้: สั่งบวกยอดดาวน์โหลดทีละ 1 ---
+    if ($document) {
+        $document->increment('download_count');
+    }
+    // ---------------------------------------------
+
+    return Storage::download($path, $filename);
+}
 
     /**
      * View a file inline.
