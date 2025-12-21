@@ -44,31 +44,64 @@
                         <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                             <i class="fas fa-cloud-upload-alt mr-2 text-indigo-600"></i> อัพโหลดเอกสารใหม่
                         </h3>
-                        <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Document Title <span class="text-red-500">*</span></label>
-                                    <input type="text" name="title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Department <span class="text-red-500">*</span></label>
-                                    <select name="department_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                                        <option value="">-- Select Department --</option>
-                                        @foreach($departments as $dept)
-                                            <option value="{{ $dept->id }}">{{ $dept->name }} ({{ $dept->division->name ?? '-' }})</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">PDF File <span class="text-red-500">*</span></label>
-                                    <input type="file" name="document_file" accept=".pdf" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" required>
-                                </div>
-                            </div>
-                            <div class="flex justify-end pt-4 border-t border-gray-200">
-                                <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md">อัพโหลดเอกสาร</button>
-                            </div>
-                        </form> 
+                        <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+    @csrf
+
+    {{-- 1. ช่องชื่อเอกสาร (ต้องมีทุกคน) --}}
+    <div>
+        <label for="title" class="block text-sm font-medium text-gray-700">ชื่อเอกสาร</label>
+        <input type="text" name="title" id="title" required
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+               placeholder="ระบุชื่อเอกสาร...">
+    </div>
+
+    {{-- 2. ช่องเลือกไฟล์ (ต้องมีทุกคน) --}}
+    <div>
+        <label for="file" class="block text-sm font-medium text-gray-700">เลือกไฟล์ (PDF/Docx)</label>
+        <input type="file" name="file" id="file" required
+               class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+    </div>
+
+    {{-- 3. ช่องเลือกแผนก (เฉพาะ Super Admin เท่านั้นที่เห็น) --}}
+    @if(Auth::user()->role === 'super_admin' || is_null(Auth::user()->department_id))
+        <div class="p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-md">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-exclamation-circle text-yellow-400"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-yellow-700">
+                        คุณคือ <strong>Super Admin</strong> กรุณาเลือกหน่วยงานที่จะนำเอกสารนี้ไปฝากไว้
+                    </p>
+                    <select name="department_id" required class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <option value="">-- กรุณาเลือกหน่วยงานปลายทาง --</option>
+                        @foreach($departments as $dept)
+                            {{-- แสดงชื่อแผนก และชื่อฝ่ายงานในวงเล็บ --}}
+                            <option value="{{ $dept->id }}">
+                                {{ $dept->name }} ({{ $dept->division->name ?? 'ไม่ระบุฝ่าย' }})
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+    @else
+        {{-- ถ้าเป็น User ธรรมดา ให้แอบส่งค่า department_id ของตัวเองไปเงียบๆ --}}
+        <input type="hidden" name="department_id" value="{{ Auth::user()->department_id }}">
+        <div class="p-2 bg-green-50 rounded-md text-sm text-green-700">
+            <i class="fas fa-check-circle mr-1"></i> 
+            กำลังอัปโหลดลง: <strong>{{ Auth::user()->department->name ?? 'หน่วยงานของคุณ' }}</strong>
+        </div>
+    @endif
+
+    {{-- 4. ปุ่มอัปโหลด (ต้องมีทุกคน!) --}}
+    <div class="pt-2">
+        <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <i class="fas fa-cloud-upload-alt mr-2"></i> อัปโหลดเอกสาร
+        </button>
+    </div>
+
+</form>
                     </div>
                 </div>
 

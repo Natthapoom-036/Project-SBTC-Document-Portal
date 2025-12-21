@@ -16,31 +16,29 @@ class DocumentController extends Controller
      * Unified index - shows admin or public view based on authentication.
      */
     public function index()
-    {
-        $user = auth()->user();
+{
+    $user = auth()->user();
 
-        // 1. เช็คสิทธิ์: ถ้าเป็น Super Admin (role = 1 หรือไม่มีสังกัด) ให้เห็นทั้งหมด
-        if ($user->role === 'super_admin' || is_null($user->department_id)) {
-            $documents = Document::with('department')->latest()->get();
-            $departments = Department::with('division')->get();
-        } else {
-            // 2. ถ้าเป็น Admin หน่วยงาน ให้เห็นแค่เอกสารของหน่วยงานตัวเองเท่านั้น!
-            $documents = Document::where('department_id', $user->department_id)
+    // เช็คว่า role คือ 'super_admin' (ไม่ใช่เลข 1)
+    if ($user->role === 'super_admin' || is_null($user->department_id)) {
+        // Super Admin เห็นทุกอย่าง
+        $documents = Document::with('department')->latest()->get();
+        $departments = Department::with('division')->get();
+    } else {
+        // User ธรรมดา เห็นแค่ของตัวเอง
+        $documents = Document::where('department_id', $user->department_id)
                              ->with('department')
                              ->latest()
                              ->get();
         
-            // กรองรายชื่อหน่วยงานให้เลือกได้แค่ของตัวเอง
-            $departments = Department::where('id', $user->department_id)->get();
-        }
-
-        // ข้อมูลส่วนกลางที่ต้องใช้
-        $divisions = Division::all();
-        $users = User::with('department')->get();
-
-        // ส่งข้อมูลไปหน้า View
-        return view('admin.unified_admin_page', compact('documents', 'departments', 'divisions', 'users'));
+        $departments = Department::where('id', $user->department_id)->get();
     }
+
+    $divisions = Division::all();
+    $users = User::with('department')->get();
+
+    return view('admin.unified_admin_page', compact('documents', 'departments', 'divisions', 'users'));
+}
 
     /**
      * Show documents for a specific department.

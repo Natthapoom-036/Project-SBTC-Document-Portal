@@ -5,95 +5,78 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Document;
+use Illuminate\Support\Facades\Auth; // <--- ต้องมีบรรทัดนี้ ไม่งั้น Error
 use Illuminate\Support\Facades\Storage;
-use App\Models\Department; 
 
 class DocumentController extends Controller
 {
-    public function index()
-    {
-        $documents = Document::with('department')->get();
-        return view('admin.documents.index', compact('documents'));
-    }
-
-    public function create()
-    {
-        $departments = Department::all();
-        return view('admin.documents.create', compact('departments'));
-    }
-
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|max:255',
-            'department_id' => 'required|exists:departments,id',
-            'document_file' => 'required|file|mimes:pdf|max:10240', // ไฟล์ PDF ไม่เกิน 10MB
+            'title' => 'required|string|max:255',
+            'file' => 'required|file|max:20480', // 20MB Limit
+            // ถ้าเป็น User ธรรมดา เราจะบังคับใส่ department_id เอง
         ]);
 
-        // 1. จัดเก็บไฟล์
-        $file = $request->file('document_file');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $file->storeAs('public/documents', $filename); 
+        $user = Auth::user();
+        $target_department_id = $request->department_id;
 
-        // 2. บันทึกข้อมูลลงฐานข้อมูล
-        Document::create([
-            'title' => $request->title,
-            'department_id' => $request->department_id,
-            'filename' => $filename,
-        ]);
+        // --- Logic: ถ้าไม่ใช่ Super Admin บังคับลงแผนกตัวเอง ---
+        if ($user->role !== 'super_admin') {
+            // ถ้า User ไม่มีสังกัด (Error Case)
+            if (is_null($user->department_id)) {
+                return redirect()->back()->with('error', 'บัญชีของคุณไม่มีสังกัด ไม่สามารถอัปโหลดได้');
+            }
+            // บังคับเปลี่ยนเป้าหมายเป็นแผนกตัวเอง
+            $target_department_id = $user->department_id;
+        } else {
+            // ถ้าเป็น Super Admin แต่ลืมเลือกแผนก
+            if (empty($target_department_id)) {
+                return redirect()->back()->with('error', 'กรุณาเลือกหน่วยงานที่จะอัปโหลด');
+            }
+        }
+        // ---------------------------------------------------
 
-        return redirect()->route('home')->with('success', 'เพิ่มเอกสารเรียบร้อยแล้ว');
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            
+            // เก็บไฟล์
+            $file->storeAs('public/documents', $filename);
+
+            // บันทึกลง Database
+            Document::create([
+                'title' => $request->title,
+                'filename' => $filename,
+                'department_id' => $target_department_id,
+                'user_id' => $user->id,
+            ]);
+
+            return redirect()->back()->with('success', 'อัปโหลดเอกสารสำเร็จ');
+        }
+
+        return redirect()->back()->with('error', 'เกิดข้อผิดพลาดในการอัปโหลด');
     }
 
     public function destroy(Document $document)
     {
-        // 1. ลบไฟล์ออกจาก storage
+        $user = Auth::user();
+
+        // ป้องกัน User ลบไฟล์ข้ามแผนก
+        if ($user->role !== 'super_admin') {
+            if ($user->department_id !== $document->department_id) {
+                abort(403, 'คุณไม่มีสิทธิ์ลบเอกสารนี้');
+            }
+        }
+
         if (Storage::exists('public/documents/' . $document->filename)) {
             Storage::delete('public/documents/' . $document->filename);
         }
 
-        // 2. ลบข้อมูลจากฐานข้อมูล
         $document->delete();
 
-        return redirect()->route('home')->with('success', 'ลบเอกสารเรียบร้อยแล้ว');
+        return redirect()->back()->with('success', 'ลบเอกสารเรียบร้อย');
     }
 
-    public function edit(Document $document)
-    {
-        $departments = Department::all();
-        return view('admin.documents.edit', compact('document', 'departments'));
-    }
-
-    public function update(Request $request, Document $document)
-    {
-        $request->validate([
-            'title' => 'required|max:255',
-            'department_id' => 'required|exists:departments,id',
-            'document_file' => 'nullable|file|mimes:pdf|max:10240', // File is optional on update
-        ]);
-
-        // 1. Update basic info
-        $document->title = $request->title;
-        $document->department_id = $request->department_id;
-
-        // 2. Handle file upload if present
-        if ($request->hasFile('document_file')) {
-            // Delete old file
-            if (Storage::exists('public/documents/' . $document->filename)) {
-                Storage::delete('public/documents/' . $document->filename);
-            }
-
-            // Store new file
-            $file = $request->file('document_file');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('public/documents', $filename);
-            
-            // Update filename in model
-            $document->filename = $filename;
-        }
-
-        $document->save();
-
-        return redirect()->route('home')->with('success', 'แก้ไขเอกสารเรียบร้อยแล้ว');
-    }
+    // อย่าลืมฟังก์ชัน create, edit, update ถ้ามี (หรือปล่อยว่างไว้ก่อนได้)
 }
