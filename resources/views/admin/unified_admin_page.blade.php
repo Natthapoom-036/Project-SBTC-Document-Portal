@@ -42,7 +42,7 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                     <div class="p-6 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                            <i class="fas fa-cloud-upload-alt mr-2 text-indigo-600"></i> Upload New Document
+                            <i class="fas fa-cloud-upload-alt mr-2 text-indigo-600"></i> อัพโหลดเอกสารใหม่
                         </h3>
                         <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
@@ -66,17 +66,17 @@
                                 </div>
                             </div>
                             <div class="flex justify-end pt-4 border-t border-gray-200">
-                                <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md">Upload Document</button>
+                                <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md">อัพโหลดเอกสาร</button>
                             </div>
-                        </form>
+                        </form> 
                     </div>
                 </div>
 
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">All Documents</h3>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">เอกสารทั้งหมด</h3>
                         @if($documents->isEmpty())
-                            <p class="text-center text-gray-500 py-4">No documents found.</p>
+                            <p class="text-center text-gray-500 py-4">ไม่พบเอกสาร</p>
                         @else
                             <div class="overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200">
@@ -92,8 +92,8 @@
                                             <tr>
                                                 <td class="px-6 py-4 font-medium text-gray-900">{{ $doc->title }}</td>
                                                 <td class="px-6 py-4 text-gray-500">{{ $doc->department->name }}</td>
-                                                <td class="px-6 py-4 text-sm font-medium">
-                                                    <a href="{{ route('documents.download', $doc->filename) }}" class="text-blue-600 hover:text-blue-900 mr-3">Download</a>
+                                                <td class="px-6 py-4 text-sm font-medium">  
+                                                    <a href="{{ route('documents.download', $doc->filename) }}" class="text-blue-600 hover:text-blue-900 mr-3">ดาวน์โหลด</a>
                                                     <form action="{{ route('documents.destroy', $doc->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Delete this document?');">
                                                         @csrf @method('DELETE')
                                                         <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>

@@ -12,12 +12,12 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
   <style>
-    /* --- CSS ของคุณ (นำมาใส่ตรงนี้เพื่อให้โหลดแน่นอน) --- */
+    /* --- CSS ของคุณ --- */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: "Segoe UI", "Sarabun", sans-serif; /* เพิ่ม Sarabun เพื่อรองรับภาษาไทยสวยๆ */
+      font-family: "Segoe UI", "Sarabun", sans-serif;
     }
 
     body {
@@ -44,7 +44,7 @@
       width: 50px;
       height: 50px;
       margin-right: 15px;
-      object-fit: contain; /* เพิ่มกันรูปเบี้ยว */
+      object-fit: contain;
     }
 
     .title h2 {
@@ -67,7 +67,7 @@
       cursor: pointer;
       font-size: 15px;
       transition: 0.3s;
-      text-decoration: none; /* ลบขีดเส้นใต้ link */
+      text-decoration: none;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -119,7 +119,7 @@
       padding: 30px 25px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       flex: 1 1 220px;
-      max-width: 250px; /* ขยายหน่อยให้ใส่คำบรรยายพอ */
+      max-width: 250px;
       transition: transform 0.2s ease, box-shadow 0.3s ease;
       cursor: pointer;
       display: flex;
@@ -127,7 +127,7 @@
       align-items: center;
       justify-content: flex-start;
       text-align: center;
-      text-decoration: none; /* กัน link มีขีดเส้นใต้ */
+      text-decoration: none;
       color: inherit;
     }
 
@@ -139,7 +139,7 @@
     .card .icon {
         font-size: 40px;
         margin-bottom: 15px;
-        color: #1d4ed8; /* กำหนดสีไอคอนให้เข้าธีม */
+        color: #1d4ed8;
     }
     
     .card h3 {
@@ -247,7 +247,8 @@
     
     @if (Route::has('login'))
         @auth
-            <a href="{{ url('/') }}" class="login-btn">
+            {{-- แก้ไขตรงนี้: เปลี่ยนจาก url('/') เป็น route('dashboard') --}}
+            <a href="{{ route('dashboard') }}" class="login-btn">
                 <i class="fas fa-user-circle"></i> Dashboard
             </a>
         @else
@@ -265,13 +266,10 @@
     </p>
 
     <div class="card-container">
-        {{-- ตรวจสอบว่ามีข้อมูลส่งมาไหม --}}
         @if(isset($divisions) && $divisions->count() > 0)
-            {{-- วนลูปสร้างการ์ดจาก Database --}}
             @foreach($divisions as $div)
             <div class="card" onclick="window.location.href='{{ route('divisions.show', $div->id) }}'">
                 <div class="icon">
-                    {{-- ดึงไอคอนจาก DB (ถ้าไม่มีใช้ Folder เป็นค่าเริ่มต้น) --}}
                     <i class="{{ $div->icon_class ?? 'fas fa-folder' }}"></i>
                 </div>
                 <h3>{{ $div->name }}</h3>
@@ -279,7 +277,6 @@
             </div>
             @endforeach
         @else
-            {{-- กรณีไม่มีข้อมูล หรือ Database ว่าง --}}
             <p style="color: red;">ไม่พบข้อมูลฝ่ายงาน (กรุณาเพิ่มข้อมูลใน Database)</p>
         @endif
     </div>
@@ -294,7 +291,6 @@
             <i class="fas fa-book"></i>
           </div>
           <h3>จำนวนเอกสารทั้งหมด</h3>
-          {{-- ดึงค่าจำนวนเอกสารจริงจากระบบ --}}
           <p class="count">{{ isset($totalDocs) ? $totalDocs : 0 }}</p>
         </div>
 
