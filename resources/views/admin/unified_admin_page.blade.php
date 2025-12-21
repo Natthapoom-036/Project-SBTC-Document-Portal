@@ -42,7 +42,7 @@
 
             {{-- ================= TAB 1: DOCUMENTS ================= --}}
             <div id="content-documents" class="tab-content">
-                {{-- Form Upload (Available to everyone, logic inside) --}}
+                {{-- Form Upload --}}
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                     <div class="p-6 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
@@ -99,7 +99,7 @@
                                         <tr>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ชื่อเอกสาร</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">หน่วยงาน</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">การดำเนินการ </th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">การดำเนินการ</th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
@@ -108,18 +108,34 @@
                                                 <td class="px-6 py-4 font-medium text-gray-900">{{ $doc->title }}</td>
                                                 <td class="px-6 py-4 text-gray-500">{{ $doc->department->name ?? '-' }}</td>
                                                 <td class="px-6 py-4 text-sm font-medium">
-                                                    <a href="{{ route('documents.download', $doc->filename) }}" class="text-blue-600 hover:text-blue-900 mr-3">ดาวน์โหลด</a>
-                                                    {{-- อนุญาตให้ Super Admin หรือ เจ้าของไฟล์ แก้ไขได้ --}}
-                                                    @if(Auth::user()->role === 'super_admin' || Auth::id() === $doc->user_id)
-                                                        <a href="{{ route('documents.edit', $doc->id) }}" class="text-yellow-600 hover:text-yellow-900 mr-2">
-                                                            <i class="fas fa-edit"></i> แก้ไข
-                                                        </a>
-                                                    @endif
-                                                    <form action="{{ route('documents.destroy', $doc->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Delete?');">
-                                                        @csrf @method('DELETE')
-                                                        <button type="submit" class="text-red-600 hover:text-red-900">ลบ</button>
-                                                    </form>
-                                                </td>
+    <div class="flex items-center gap-2">
+        {{-- 1. ปุ่มดาวน์โหลด (โชว์ให้ทุกคนเห็น) --}}
+        <a href="{{ route('documents.download', $doc->filename) }}" class="text-blue-600 hover:text-blue-900 flex items-center">
+            <i class="fas fa-download mr-1"></i> ดาวน์โหลด
+        </a>
+
+        {{-- 2. ปุ่มแก้ไข & ลบ (เช็คสิทธิ์) --}}
+        {{-- สิทธิ์: ต้องเป็น Super Admin หรือ อยู่หน่วยงานเดียวกับเอกสาร --}}
+        @if(Auth::user()->role === 'super_admin' || (Auth::user()->department_id == $doc->department_id))
+            
+            {{-- ขีดคั่น | --}}
+            <span class="text-gray-300">|</span>
+
+            {{-- ปุ่มแก้ไข --}}
+            <a href="{{ route('documents.edit', $doc->id) }}" class="text-yellow-600 hover:text-yellow-900 flex items-center">
+                <i class="fas fa-edit mr-1"></i> แก้ไข
+            </a>
+
+            {{-- ปุ่มลบ --}}
+            <form action="{{ route('documents.destroy', $doc->id) }}" method="POST" class="inline-block" onsubmit="return confirm('ยืนยันลบเอกสารนี้?');">
+                @csrf @method('DELETE')
+                <button type="submit" class="text-red-600 hover:text-red-900 flex items-center ml-2">
+                    <i class="fas fa-trash-alt mr-1"></i> ลบ
+                </button>
+            </form>
+        @endif
+    </div>
+</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -132,7 +148,6 @@
 
             {{-- ================= TAB 2: DIVISIONS ================= --}}
             <div id="content-divisions" class="tab-content hidden">
-                {{-- Create Form (Super Admin Only) --}}
                 @if(Auth::user()->role === 'super_admin')
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                     <div class="p-6 bg-purple-50 border border-purple-200">
@@ -149,7 +164,6 @@
                 </div>
                 @endif
 
-                {{-- Divisions Table --}}
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">รายชื่อฝ่ายงาน</h3>
@@ -168,7 +182,7 @@
                                     @if(Auth::user()->role === 'super_admin')
                                     <form action="{{ route('divisions.destroy', $div->id) }}" method="POST" onsubmit="return confirm('Delete?');">
                                         @csrf @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:text-red-700 text-sm">Delete</button>
+                                        <button type="submit" class="text-red-500 hover:text-red-700 text-sm">ลบ</button>
                                     </form>
                                     @endif
                                 </li>
@@ -180,7 +194,6 @@
 
             {{-- ================= TAB 3: DEPARTMENTS ================= --}}
             <div id="content-departments" class="tab-content hidden">
-                {{-- Create Form (Super Admin Only) --}}
                 @if(Auth::user()->role === 'super_admin')
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                     <div class="p-6 bg-green-50 border border-green-200">
@@ -204,7 +217,6 @@
                 </div>
                 @endif
 
-                {{-- Departments Table --}}
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">รายชื่อหน่วยงาน</h3>
@@ -247,7 +259,6 @@
 
             {{-- ================= TAB 4: USERS ================= --}}
             <div id="content-users" class="tab-content hidden">
-                {{-- Create Form (Super Admin Only) --}}
                 @if(Auth::user()->role === 'super_admin')
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                     <div class="p-6 bg-yellow-50 border border-yellow-200">
@@ -273,7 +284,6 @@
                 </div>
                 @endif
 
-                {{-- Users Table --}}
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">รายชื่อผู้ใช้งาน</h3>
@@ -303,7 +313,7 @@
                                                     @csrf @method('DELETE')
                                                     <button type="submit" class="text-red-500 hover:text-red-700 text-sm">ลบ</button>
                                                 </form>
-                                                @endif  
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
