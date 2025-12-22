@@ -43,7 +43,7 @@
   {{-- Header --}}
   <header class="header">
     <div class="logo-section">
-      <img src="{{ asset('image/sbtclogo.jpg') }}" alt="Logo" class="logo">
+      <img src="{{ asset('sbtclogo.png.jpg') }}" alt="Logo" class="logo">
       <div class="title">
         <h2>ระบบงานเอกสาร</h2>
         <p>วิทยาลัยเทคนิคสิงห์บุรี</p>
@@ -61,7 +61,7 @@
 
   {{-- Hero Section --}}
   <main class="hero">
-    <h1>คลังเอกสารออนไลน์</h1>
+    <h1>คลังเอกสารวิทยาลัยเทคนิคสิงห์บุรี</h1>
     <p>เลือกฝ่ายงานด้านล่างเพื่อเข้าถึงเอกสารที่ต้องการดาวน์โหลด</p>
   </main>
 

@@ -59,9 +59,9 @@
     }
     .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: #bfdbfe; }
     
-    /* Icon Style (เปลี่ยนสีเป็นเขียวหรือม่วง เพื่อให้แยกความต่างจากหน้าแรกได้นิดหน่อย หรือจะใช้สีเดิมก็ได้) */
+    /* Icon Style */
     .card .icon { 
-        font-size: 28px; color: #1752a9ff; /* สีเขียว */
+        font-size: 28px; color: #3b82f6;
         margin-bottom: 20px; background: #ecfdf5; 
         width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; 
         border-radius: 50%; margin-left: auto; margin-right: auto; 
