@@ -43,11 +43,20 @@ class DocumentController extends Controller
     /**
      * Show documents for a specific department.
      */
-    public function show(Department $department)
-    {
-        $documents = $department->documents()->latest()->get();
-        return view('public.department_docs', compact('department', 'documents'));
-    }
+    // 2. เมื่อกดเลือก "หน่วยงาน" -> ให้แสดง "ตารางเอกสาร" (แบบสวยๆ)
+public function show(Department $department)
+{
+    // ดึงเอกสารในหน่วยงานนี้
+    $documents = Document::where('department_id', $department->id)
+        ->with('user', 'department')
+        ->latest()
+        ->get();
+
+    $pageTitle = "เอกสาร: " . $department->name;
+
+    // ส่งไปหน้า documents_list (ที่เป็นตารางสวยๆ ที่คุณมีอยู่แล้ว)
+    return view('public.documents_list', compact('documents', 'pageTitle'));
+}
 
     /**
      * Download a file.
@@ -81,9 +90,14 @@ class DocumentController extends Controller
         return Storage::response($path, $filename);
     }
 
-    public function listDepartments(Division $division)
-    {
-        $departments = $division->departments()->withCount('documents')->get();
-        return view('public.division_departments', compact('division', 'departments'));
-    }
+    // 🔥 แก้ฟังก์ชันนี้: กดเลือกฝ่าย (Division) แล้วไปหน้าตารางสวยๆ
+    // 1. เมื่อกดเลือก "ฝ่าย" -> ให้แสดงรายชื่อ "หน่วยงาน"
+public function listDepartments(Division $division)
+{
+    // ดึงหน่วยงานทั้งหมดของฝ่ายนี้ พร้อมนับจำนวนเอกสาร
+    $departments = $division->departments()->withCount('documents')->get();
+
+    // ส่งไปหน้า departments_list (ที่เราเพิ่งสร้างในข้อ 1)
+    return view('public.departments_list', compact('division', 'departments'));
+}
 }

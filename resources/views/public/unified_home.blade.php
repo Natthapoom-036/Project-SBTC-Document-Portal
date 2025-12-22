@@ -4,325 +4,116 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>งานเอกสาร วิทยาลัยเทคนิคสิงห์บุรี</title>
-  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  
-  <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
   @vite(['resources/css/app.css', 'resources/js/app.js'])
-
   <style>
-    /* --- CSS ของคุณ --- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Segoe UI", "Sarabun", sans-serif;
-    }
-
-    body {
-      background-color: #f6f9fc;
-      color: #333;
-    }
-
-    /* Header */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 40px;
-      background-color: #ffffff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .logo-section {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo {
-      width: 50px;
-      height: 50px;
-      margin-right: 15px;
-      object-fit: contain;
-    }
-
-    .title h2 {
-      font-size: 20px;
-      color: #1d4ed8;
-      margin-bottom: 2px;
-    }
-
-    .title p {
-      font-size: 13px;
-      color: #555;
-    }
-
-    .login-btn {
-      background-color: #1d4ed8;
-      color: #fff;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 15px;
-      transition: 0.3s;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .login-btn:hover {
-      background-color: #2563eb;
-    }
-
-    /* Main Section */
-    .main {
-      text-align: center;
-      margin: 60px auto;
-      max-width: 1200px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 40vh;
-    }
+    /* CSS ชุดเดิม (ย่อให้สั้นลงเพื่อความสะดวก) */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Figtree", "Sarabun", sans-serif; }
+    body { background-color: #f3f4f6; color: #1f2937; }
+    .header { display: flex; justify-content: space-between; padding: 15px 5%; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+    .logo-section { display: flex; align-items: center; gap: 15px; }
+    .logo { width: 45px; } 
+    .title h2 { color: #1e40af; font-weight: 700; font-size: 1.2rem; }
+    .login-btn { background: #2563eb; color: white; padding: 8px 20px; border-radius: 50px; text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; transition: 0.2s; }
+    .login-btn:hover { background: #1d4ed8; }
     
-    .main h1 {
-        font-size: 2.5rem;
-        margin-bottom: 10px;
-        color: #333;
-    }
-
-    .subtitle {
-      font-size: 16px;
-      color: #555;
-      margin-bottom: 50px;
-      max-width: 600px;
-      line-height: 1.6;
-    }
-
-    /* Card Layout */
-    .card-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: stretch;
-      gap: 30px;
-      width: 100%;
-      max-width: 1000px;
-    }
-
-    .card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 30px 25px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      flex: 1 1 220px;
-      max-width: 250px;
-      transition: transform 0.2s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      text-align: center;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-    }
+    .hero { text-align: center; padding: 60px 20px 40px; }
+    .hero h1 { font-size: 2.2rem; color: #111827; margin-bottom: 10px; font-weight: 800; }
     
-    .card .icon {
-        font-size: 40px;
-        margin-bottom: 15px;
-        color: #1d4ed8;
-    }
+    .section-container { max-width: 1100px; margin: 0 auto 60px; padding: 0 20px; }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; }
+    .card { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); text-align: center; cursor: pointer; transition: 0.3s; border: 1px solid #f3f4f6; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: #bfdbfe; }
+    .card .icon { font-size: 32px; color: #3b82f6; margin: 0 auto 15px; background: #eff6ff; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
     
-    .card h3 {
-        margin-bottom: 10px;
-        font-size: 1.1rem;
-        color: #1d4ed8;
-    }
+    .stats-grid { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 40px; }
+    .stat-card { background: white; padding: 25px; border-radius: 16px; text-align: center; flex: 1; min-width: 200px; max-width: 250px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 20px; color: white; }
+    .bg-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .bg-green { background: linear-gradient(135deg, #10b981, #059669); }
+    .bg-purple { background: linear-gradient(135deg, #a855f7, #7c3aed); }
+    .stat-card .value { font-size: 1.8rem; font-weight: 800; color: #111827; }
     
-    .card p {
-        font-size: 0.9rem;
-        color: #666;
-        line-height: 1.4;
-    }
-
-    /* Quick Info Section */
-    .info-section {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      margin-top: 60px;
-      margin-bottom: 80px;
-    }
-
-    .info-container {
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      padding: 40px 30px;
-      max-width: 900px;
-      width: 90%;
-      text-align: center;
-    }
-
-    .info-container h2 {
-      font-size: 20px;
-      margin-bottom: 30px;
-      color: #222;
-    }
-
-    .info-cards {
-      display: flex;
-      justify-content: center;
-      align-items: stretch;
-      gap: 60px;
-      flex-wrap: wrap;
-    }
-
-    .info-card {
-      flex: 1 1 200px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .icon-box {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 15px;
-      color: #fff;
-      font-size: 24px;
-    }
-
-    .icon-box.blue { background-color: #3b82f6; }
-    .icon-box.green { background-color: #34d399; }
-    .icon-box.purple { background-color: #a855f7; }
-
-    .info-card h3 {
-      font-size: 16px;
-      margin-bottom: 5px;
-      color: #333;
-    }
-
-    .count {
-      font-size: 20px;
-      font-weight: bold;
-      color: #1d4ed8;
-    }
-
-    /* Footer */
-    .footer {
-      text-align: center;
-      padding: 15px;
-      margin-top: 50px;
-      background-color: #ffffff;
-      border-top: 1px solid #ddd;
-      color: #444;
-      font-size: 14px;
-    }
+    .footer { text-align: center; padding: 30px; margin-top: 60px; background: white; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 0.9rem; }
   </style>
 </head>
 <body>
 
+  {{-- Header --}}
   <header class="header">
     <div class="logo-section">
       <img src="{{ asset('image/sbtclogo.jpg') }}" alt="Logo" class="logo">
       <div class="title">
-        <h2>ระบบงานเอกสาร วิทยาลัยเทคนิคสิงห์บุรี</h2>
-        <p>Singburi Technical College Document Portal</p>
+        <h2>ระบบงานเอกสาร</h2>
+        <p>วิทยาลัยเทคนิคสิงห์บุรี</p>
       </div>
     </div>
     
     @if (Route::has('login'))
         @auth
-            {{-- แก้ไขตรงนี้: เปลี่ยนจาก url('/') เป็น route('dashboard') --}}
-            <a href="{{ route('dashboard') }}" class="login-btn">
-                <i class="fas fa-user-circle"></i> Dashboard
-            </a>
+            <a href="{{ route('dashboard') }}" class="login-btn"><i class="fas fa-columns"></i> Dashboard</a>
         @else
-            <a href="{{ route('login') }}" class="login-btn">
-                <i class="fas fa-sign-in-alt"></i> Login
-            </a>
+            <a href="{{ route('login') }}" class="login-btn"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</a>
         @endauth
     @endif
   </header>
 
-  <main class="main">
-    <h1>ยินดีต้อนรับสู่ระบบ</h1>
-    <p class="subtitle">
-      ที่นี่จะแสดงเอกสารในแต่ละฝ่ายแต่ละงานให้ผู้ใช้สามารถเลือก Downloads ได้เลย
-    </p>
-
-    <div class="card-container">
-        @if(isset($divisions) && $divisions->count() > 0)
-            @foreach($divisions as $div)
-            <div class="card" onclick="window.location.href='{{ route('divisions.show', $div->id) }}'">
-                <div class="icon">
-                    <i class="{{ $div->icon_class ?? 'fas fa-folder' }}"></i>
-                </div>
-                <h3>{{ $div->name }}</h3>
-                <p>{{ $div->description ?? 'คลิกเพื่อดูรายละเอียด' }}</p>
-            </div>
-            @endforeach
-        @else
-            <p style="color: red;">ไม่พบข้อมูลฝ่ายงาน (กรุณาเพิ่มข้อมูลใน Database)</p>
-        @endif
-    </div>
+  {{-- Hero Section --}}
+  <main class="hero">
+    <h1>คลังเอกสารออนไลน์</h1>
+    <p>เลือกฝ่ายงานด้านล่างเพื่อเข้าถึงเอกสารที่ต้องการดาวน์โหลด</p>
   </main>
 
-  <section class="info-section">
-    <div class="info-container">
-      <h2>Quick Information</h2>
-      <div class="info-cards">
-        
-        {{-- การ์ด 1: จำนวนเอกสาร --}}
-        <div class="info-card">
-          <div class="icon-box blue">
-            <i class="fas fa-book"></i>
-          </div>
-          <h3>จำนวนเอกสารทั้งหมด</h3>
-          {{-- แก้เลข 0 เป็นตัวแปรนี้ --}}
-          <p class="count">{{ number_format($totalDocs) }}</p>
+  <div class="section-container">
+    
+    {{-- เมนูฝ่ายงาน (Cards) --}}
+    <div style="margin-bottom: 50px;">
+        <h3 style="margin-bottom: 20px; font-size: 1.2rem; color: #374151; font-weight: 600; border-left: 4px solid #2563eb; padding-left: 15px;">
+            หน่วยงานภายใน
+        </h3>
+        <div class="card-grid">
+            @if(isset($divisions) && $divisions->count() > 0)
+                @foreach($divisions as $div)
+                {{-- ลิงก์ไปหน้าใหม่ --}}
+                <div class="card" onclick="window.location.href='{{ route('divisions.show', $div->id) }}'">
+                    <div class="icon"><i class="{{ $div->icon_class ?? 'fas fa-folder' }}"></i></div>
+                    <h3>{{ $div->name }}</h3>
+                    <p>{{ $div->description ?? 'คลิกเพื่อดูเอกสาร' }}</p>
+                </div>
+                @endforeach
+            @else
+                <p style="color: #ef4444;">ไม่พบข้อมูลฝ่ายงาน</p>
+            @endif
         </div>
-
-        {{-- การ์ด 2: ยอดเข้าชม --}}
-        <div class="info-card">
-          <div class="icon-box green">
-            <i class="fas fa-user"></i>
-          </div>
-          <h3>ยอดผู้ชมทั้งหมด</h3>
-          {{-- แก้เลข 0 เป็นตัวแปรนี้ --}}
-          <p class="count">{{ number_format($totalViews) }}</p>
-        </div>
-
-        {{-- การ์ด 3: ยอดดาวน์โหลด --}}
-        <div class="info-card">
-          <div class="icon-box purple">
-            <i class="fas fa-clipboard"></i>
-          </div>
-          <h3>ยอดดาวน์โหลดทั้งหมด</h3>
-          {{-- แก้เลข 0 เป็นตัวแปรนี้ --}}
-          <p class="count">{{ number_format($totalDownloads) }}</p>
-        </div>
-
-      </div>
     </div>
-</section>
+
+    {{-- สถิติระบบ --}}
+    <div>
+        <h3 style="margin-bottom: 20px; font-size: 1.2rem; color: #374151; font-weight: 600; text-align: center;">ภาพรวมระบบ</h3>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon bg-blue"><i class="fas fa-book"></i></div>
+                <h4>จำนวนเอกสาร</h4>
+                <div class="value">{{ number_format($totalDocs) }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon bg-green"><i class="fas fa-users"></i></div>
+                <h4>ยอดเข้าชม</h4>
+                <div class="value">{{ number_format($totalViews) }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon bg-purple"><i class="fas fa-download"></i></div>
+                <h4>การดาวน์โหลด</h4>
+                <div class="value">{{ number_format($totalDownloads) }}</div>
+            </div>
+        </div>
+    </div>
+
+  </div>
 
   <footer class="footer">
-    © {{ date('Y') }} วิทยาลัยเทคนิคสิงห์บุรี | Document Management System
+    <p>© {{ date('Y') }} วิทยาลัยเทคนิคสิงห์บุรี | พัฒนาระบบโดย แผนกเทคโนโลยีสารสนเทศ</p>
   </footer>
 
 </body>

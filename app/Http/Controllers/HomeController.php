@@ -36,8 +36,11 @@ class HomeController extends Controller
 
         // ข้อมูลฝ่ายงาน (ของเดิมที่ต้องใช้แสดงผล)
         $divisions = Division::all(); 
+        
+    //ดึงข้อมูลเอกสารทั้งหมด (พร้อมข้อมูลคนอัพ) ส่งไปหน้าแรก
+        $documents = Document::with('user', 'department')->latest()->get();
 
         // 3. ส่งทุกอย่างไปที่หน้า View
-        return view('public.unified_home', compact('divisions', 'totalDocs', 'totalViews', 'totalDownloads'));
+        return view('public.unified_home', compact('divisions', 'totalDocs', 'totalViews', 'totalDownloads', 'documents'));
     }
 }   
