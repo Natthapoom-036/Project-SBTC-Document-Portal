@@ -43,7 +43,7 @@
   {{-- Header --}}
   <header class="header">
     <div class="logo-section">
-      <img src="{{ asset('sbtclogo.png.jpg') }}" alt="Logo" class="logo">
+      <img src="{{ asset('sbtcLogo.jpg') }}" alt="Logo" class="logo">
       <div class="title">
         <h2>ระบบงานเอกสาร</h2>
         <p>วิทยาลัยเทคนิคสิงห์บุรี</p>
@@ -79,7 +79,7 @@
                 <div class="card" onclick="window.location.href='{{ route('divisions.show', $div->id) }}'">
                     <div class="icon"><i class="{{ $div->icon_class ?? 'fas fa-folder' }}"></i></div>
                     <h3>{{ $div->name }}</h3>
-                    <p>{{ $div->description ?? 'คลิกเพื่อดูเอกสาร' }}</p>
+                    <p>{{ $div->description ?? 'คลิกเพื่อดูหน่วยงาน ' }}</p>
                 </div>
                 @endforeach
             @else

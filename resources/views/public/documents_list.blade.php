@@ -116,7 +116,7 @@
                             </td>
                             <td style="text-align: center;">
                                 <div class="count-badge">
-                                    <i class="fas fa-eye" style="font-size: 12px;"></i>
+                                    <i class="fas fa-download" style="font-size: 12px;"></i>
                                     {{ number_format($doc->download_count) }}
                                 </div>
                             </td>
