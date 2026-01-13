@@ -100,4 +100,27 @@ public function listDepartments(Division $division)
     // ส่งไปหน้า departments_list (ที่เราเพิ่งสร้างในข้อ 1)
     return view('public.departments_list', compact('division', 'departments'));
 }
+
+public function search(Request $request)
+{
+    $query = $request->input('q');
+
+    // 🔥 จุดที่แก้: ถ้าไม่มีคำค้นหา (ว่างเปล่า) ให้ดึง "เอกสารทั้งหมด" มาแสดงแทน
+    if (!$query) {
+        $documents = Document::with('user', 'department')->latest()->get();
+        $pageTitle = 'เอกสารทั้งหมด';
+        return view('public.documents_list', compact('documents', 'pageTitle'));
+    }
+
+    // ส่วนค้นหาเดิม (ไม่ต้องแก้)
+    $documents = Document::where('title', 'LIKE', "%{$query}%")
+                ->orWhere('filename', 'LIKE', "%{$query}%")
+                ->with('user', 'department')
+                ->latest()
+                ->get();
+
+    $pageTitle = 'ผลการค้นหา: "' . $query . '"';
+
+    return view('public.documents_list', compact('documents', 'pageTitle'));
+}
 }

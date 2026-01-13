@@ -70,9 +70,40 @@
 
   <div class="container">
     <div class="doc-table-wrapper">
-        <div class="table-header">
-            <h2><i class="fas fa-folder-open text-indigo-500"></i> {{ $pageTitle }}</h2>
-            <span style="color:#6b7280; font-size:0.9rem;">พบ {{ $documents->count() }} รายการ</span>
+        {{-- 🔥 แก้ไขส่วนหัวตารางตรงนี้ครับ (ใส่ช่องค้นหาเข้าไป) 🔥 --}}
+        <div class="table-header" style="flex-wrap: wrap; gap: 15px;">
+            
+            {{-- ส่วนที่ 1: ชื่อหัวข้อและจำนวน (อยู่ซ้าย) --}}
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <h2 style="font-size: 1.2rem; color: #1f2937; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-folder-open text-indigo-500"></i> {{ $pageTitle }}
+                </h2>
+                <span style="color:#6b7280; font-size:0.9rem;">พบ {{ $documents->count() }} รายการ</span>
+            </div>
+
+            {{-- ส่วนที่ 2: ช่องค้นหา (อยู่ขวา) --}}
+            <form action="{{ route('documents.search') }}" method="GET" style="display: flex; gap: 10px; flex: 1; max-width: 400px; justify-content: flex-end; margin-left: auto;">
+    <div style="position: relative; width: 100%;">
+        <input type="text" name="q" placeholder="ค้นหาชื่อเอกสาร..." 
+               style="width: 100%; padding: 8px 35px 8px 35px; border: 1px solid #d1d5db; border-radius: 50px; outline: none; font-size: 0.9rem; transition: 0.2s;"
+               onfocus="this.style.borderColor='#3b82f6'; this.style.boxShadow='0 0 0 3px rgba(59, 130, 246, 0.1)';"
+               onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none';"
+               value="{{ request('q') }}"
+        >
+        <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 0.85rem;"></i>
+        
+        {{-- 🔥 เพิ่มปุ่มกากบาท (X) ตรงนี้: จะโชว์เฉพาะตอนที่มีการพิมพ์ค้นหาค้างไว้ --}}
+        @if(request('q'))
+            <a href="{{ route('documents.search') }}" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; cursor: pointer; text-decoration: none;" title="ล้างค่า">
+                <i class="fas fa-times-circle hover:text-red-500 transition-colors"></i>
+            </a>
+        @endif
+    </div>
+    
+    <button type="submit" style="background: #2563eb; color: white; border: none; padding: 0 20px; border-radius: 50px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; white-space: nowrap;">
+        ค้นหา
+    </button>
+</form>
         </div>
         
         @if($documents->isEmpty())

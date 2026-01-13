@@ -22,7 +22,8 @@ Route::get('departments/{department}', [DocumentController::class, 'show'])->nam
 // โหลด/ดูไฟล์
 Route::get('documents/download/{filename}', [DocumentController::class, 'download'])->name('documents.download');
 Route::get('documents/view/{filename}', [DocumentController::class, 'viewFile'])->name('documents.view');
-
+// ค้นหาเอกสาร
+Route::get('search', [DocumentController::class, 'search'])->name('documents.search');
 
 // 3. โซน Admin (ต้อง Login เท่านั้น)
 Route::middleware(['auth'])->group(function () {
