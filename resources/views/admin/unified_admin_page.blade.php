@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            <i class="fas fa-cogs text-indigo-500 mr-2"></i> {{ __('แผงควบคุมผู้ดูแลระบบ') }}
+            <i class="fas fa-cogs text-indigo-500 mr-2"></i> {{ __('แผงควบคุมสำหรับผู้ดูแลระบบ') }}
         </h2>
     </x-slot>
 
-    
+    {{-- 🔥 CSS ปรับแต่งพิเศษ (แก้ปุ่มล่องหน + ตารางเต็ม) 🔥 --}}
     <style>
         /* 1. บังคับตารางให้กว้าง 100% เสมอ */
         .full-width-table {
@@ -13,9 +13,9 @@
             border-collapse: collapse;
         }
 
-        /* 2. ปุ่มอัปโหลด */
+        /* 2. ปุ่มอัปโหลด (สีน้ำเงินเข้ม) */
         .btn-upload {
-            background-color: #2563eb !important; /* สีน้ำเงิน */
+            background-color: #2563eb !important;
             color: white !important;
             padding: 10px 24px;
             border-radius: 8px;
@@ -34,7 +34,7 @@
             transform: translateY(-1px);
         }
 
-        /* 3. ปุ่ม Action ต่างๆ  */
+        /* 3. ปุ่ม Action ต่างๆ */
         .btn-action {
             display: inline-flex; align-items: center; gap: 6px;
             padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600;
@@ -76,18 +76,23 @@
             {{-- Navigation Tabs --}}
             <div class="bg-white shadow-sm rounded-t-xl border-b border-gray-200">
                 <nav class="flex overflow-x-auto px-2" aria-label="Tabs">
+                    {{-- 1. Tab เอกสาร (ทุกคนเห็น) --}}
                     <button onclick="showTab('documents')" id="tab-documents" class="tab-btn active">
                         <i class="fas fa-file-pdf"></i> จัดการเอกสาร
                     </button>
-                    <button onclick="showTab('divisions')" id="tab-divisions" class="tab-btn">
-                        <i class="fas fa-building"></i> ฝ่ายงาน
-                    </button>
-                    <button onclick="showTab('departments')" id="tab-departments" class="tab-btn">
-                        <i class="fas fa-sitemap"></i> หน่วยงาน
-                    </button>
-                    <button onclick="showTab('users')" id="tab-users" class="tab-btn">
-                        <i class="fas fa-users"></i> ผู้ใช้งาน
-                    </button>
+
+                    {{-- 2. Tab อื่นๆ (เห็นเฉพาะ Super Admin) --}}
+                    @if(Auth::user()->role === 'super_admin')
+                        <button onclick="showTab('divisions')" id="tab-divisions" class="tab-btn">
+                            <i class="fas fa-building"></i> ฝ่ายงาน
+                        </button>
+                        <button onclick="showTab('departments')" id="tab-departments" class="tab-btn">
+                            <i class="fas fa-sitemap"></i> หน่วยงาน
+                        </button>
+                        <button onclick="showTab('users')" id="tab-users" class="tab-btn">
+                            <i class="fas fa-users"></i> ผู้ใช้งาน
+                        </button>
+                    @endif
                 </nav>
             </div>
 
@@ -131,7 +136,6 @@
                             @endif
 
                             <div class="flex justify-end pt-2">
-                                {{-- 🔥 ปุ่ม Upload ที่แก้ CSS แล้ว 🔥 --}}
                                 <button type="submit" class="btn-upload">
                                     <i class="fas fa-upload"></i> ยืนยันการอัปโหลด
                                 </button>
@@ -141,7 +145,6 @@
 
                     {{-- Table Documents --}}
                     <div class="overflow-x-auto border rounded-lg">
-                        {{-- 🔥 ใช้ class full-width-table เพื่อบังคับให้เต็มจอ 🔥 --}}
                         <table class="min-w-full divide-y divide-gray-200 full-width-table">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -204,9 +207,9 @@
                     </div>
                 </div>
 
-                {{-- ================= TAB 2: DIVISIONS ================= --}}
+                {{-- ================= TAB 2: DIVISIONS (เห็นเฉพาะ Admin) ================= --}}
+                @if(Auth::user()->role === 'super_admin')
                 <div id="content-divisions" class="tab-content hidden">
-                    @if(Auth::user()->role === 'super_admin')
                     <div class="bg-purple-50 border border-purple-100 rounded-xl p-6 mb-8">
                         <h3 class="text-lg font-bold text-purple-900 mb-4"><i class="fas fa-plus-circle mr-2"></i> เพิ่มฝ่ายงานใหม่</h3>
                         <form action="{{ route('divisions.store') }}" method="POST" class="flex flex-wrap gap-3 items-end">
@@ -222,7 +225,6 @@
                             </button>
                         </form>
                     </div>
-                    @endif
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         @foreach($divisions as $div)
@@ -236,22 +238,21 @@
                                         <div class="text-sm text-gray-500">{{ $div->description }}</div>
                                     </div>
                                 </div>
-                                @if(Auth::user()->role === 'super_admin')
                                 <form action="{{ route('divisions.destroy', $div->id) }}" method="POST" onsubmit="return confirm('ลบฝ่ายงานนี้?');">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="btn-action btn-del">
                                         <i class="fas fa-trash-alt"></i> ลบ
                                     </button>
                                 </form>
-                                @endif
                             </div>
                         @endforeach
                     </div>
                 </div>
+                @endif
 
-                {{-- ================= TAB 3: DEPARTMENTS ================= --}}
+                {{-- ================= TAB 3: DEPARTMENTS (เห็นเฉพาะ Admin) ================= --}}
+                @if(Auth::user()->role === 'super_admin')
                 <div id="content-departments" class="tab-content hidden">
-                    @if(Auth::user()->role === 'super_admin')
                     <div class="bg-green-50 border border-green-100 rounded-xl p-6 mb-8">
                         <h3 class="text-lg font-bold text-green-900 mb-4"><i class="fas fa-plus-circle mr-2"></i> เพิ่มหน่วยงานย่อย</h3>
                         <form action="{{ route('departments.store') }}" method="POST" class="flex flex-wrap gap-3 items-end">
@@ -272,7 +273,6 @@
                             </button>
                         </form>
                     </div>
-                    @endif
 
                     <div class="overflow-x-auto border rounded-lg">
                         <table class="min-w-full divide-y divide-gray-200 full-width-table">
@@ -281,9 +281,7 @@
                                     <th class="px-6 py-4 text-left text-sm font-bold text-gray-600 uppercase">ชื่อหน่วยงาน</th>
                                     <th class="px-6 py-4 text-left text-sm font-bold text-gray-600 uppercase">สังกัดฝ่าย</th>
                                     <th class="px-6 py-4 text-center text-sm font-bold text-gray-600 uppercase">จำนวนเอกสาร</th>
-                                    @if(Auth::user()->role === 'super_admin')
                                     <th class="px-6 py-4 text-center text-sm font-bold text-gray-600 uppercase">จัดการ</th>
-                                    @endif
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -296,7 +294,6 @@
                                                 {{ $dept->documents_count }} ไฟล์
                                             </span>
                                         </td>
-                                        @if(Auth::user()->role === 'super_admin')
                                         <td class="px-6 py-4 text-center">
                                             <form action="{{ route('departments.destroy', $dept->id) }}" method="POST" onsubmit="return confirm('ลบหน่วยงานนี้?');">
                                                 @csrf @method('DELETE')
@@ -305,17 +302,17 @@
                                                 </button>
                                             </form>
                                         </td>
-                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
+                @endif
 
-                {{-- ================= TAB 4: USERS ================= --}}
+                {{-- ================= TAB 4: USERS (เห็นเฉพาะ Admin) ================= --}}
+                @if(Auth::user()->role === 'super_admin')
                 <div id="content-users" class="tab-content hidden">
-                    @if(Auth::user()->role === 'super_admin')
                     <div class="bg-yellow-50 border border-yellow-100 rounded-xl p-6 mb-8">
                         <h3 class="text-lg font-bold text-yellow-800 mb-4"><i class="fas fa-user-plus mr-2"></i> เพิ่มผู้ใช้งานใหม่</h3>
                         <form action="{{ route('users.store') }}" method="POST">
@@ -338,7 +335,6 @@
                             </div>
                         </form>
                     </div>
-                    @endif
 
                     <div class="overflow-x-auto border rounded-lg">
                         <table class="min-w-full divide-y divide-gray-200 full-width-table">
@@ -383,6 +379,7 @@
                         </table>
                     </div>
                 </div>
+                @endif
 
             </div>
         </div>
@@ -394,8 +391,14 @@
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             
-            document.getElementById('content-' + tabName).classList.remove('hidden');
-            document.getElementById('tab-' + tabName).classList.add('active');
+            // เช็คก่อนว่า Element มีอยู่จริงไหม (เผื่อ User ธรรมดาไม่มีสิทธิ์เห็นบาง Tab)
+            const targetContent = document.getElementById('content-' + tabName);
+            const targetBtn = document.getElementById('tab-' + tabName);
+
+            if(targetContent && targetBtn) {
+                targetContent.classList.remove('hidden');
+                targetBtn.classList.add('active');
+            }
         }
     </script>
 </x-app-layout>
