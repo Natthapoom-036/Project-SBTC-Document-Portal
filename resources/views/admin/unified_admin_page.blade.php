@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    {{-- 🔥 CSS ปรับแต่งพิเศษ (แก้ปุ่มล่องหน + ตารางเต็ม) 🔥 --}}
+    {{-- 🔥 CSS ปรับแต่งพิเศษ (แก้ปุ่มล่องหน + ตารางเต็ม + สีปุ่มแยกตามประเภท) 🔥 --}}
     <style>
         /* 1. บังคับตารางให้กว้าง 100% เสมอ */
         .full-width-table {
@@ -13,9 +13,8 @@
             border-collapse: collapse;
         }
 
-        /* 2. ปุ่มอัปโหลด (สีน้ำเงินเข้ม) */
-        .btn-upload {
-            background-color: #2563eb !important;
+        /* 2. สไตล์ปุ่มหลัก (โครงสร้าง) */
+        .custom-btn {
             color: white !important;
             padding: 10px 24px;
             border-radius: 8px;
@@ -27,14 +26,17 @@
             align-items: center;
             gap: 8px;
             transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .btn-upload:hover {
-            background-color: #1d4ed8 !important;
-            transform: translateY(-1px);
-        }
+        .custom-btn:hover { transform: translateY(-1px); filter: brightness(90%); }
 
-        /* 3. ปุ่ม Action ต่างๆ */
+        /* แยกสีปุ่มให้ชัดเจน (แก้ปัญหาปุ่มล่องหน) */
+        .btn-blue   { background-color: #2563eb !important; } /* ปุ่มอัปโหลด */
+        .btn-purple { background-color: #9333ea !important; } /* ปุ่มฝ่ายงาน */
+        .btn-green  { background-color: #16a34a !important; } /* ปุ่มหน่วยงาน */
+        .btn-yellow { background-color: #ca8a04 !important; } /* ปุ่มผู้ใช้งาน */
+
+        /* 3. ปุ่ม Action ในตาราง (เล็ก) */
         .btn-action {
             display: inline-flex; align-items: center; gap: 6px;
             padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600;
@@ -136,7 +138,8 @@
                             @endif
 
                             <div class="flex justify-end pt-2">
-                                <button type="submit" class="btn-upload">
+                                {{-- ใช้ Class .custom-btn .btn-blue --}}
+                                <button type="submit" class="custom-btn btn-blue">
                                     <i class="fas fa-upload"></i> ยืนยันการอัปโหลด
                                 </button>
                             </div>
@@ -220,7 +223,7 @@
                             <div class="flex-1 min-w-[200px]">
                                 <input type="text" name="description" placeholder="รายละเอียดสั้นๆ" class="w-full rounded-lg border-purple-300 focus:ring-purple-500">
                             </div>
-                            <button type="submit" class="btn-upload bg-purple-600 hover:bg-purple-700">
+                            <button type="submit" class="custom-btn btn-purple">
                                 <i class="fas fa-save"></i> บันทึก
                             </button>
                         </form>
@@ -268,7 +271,7 @@
                             <div class="flex-1 min-w-[200px]">
                                 <input type="text" name="name" placeholder="ชื่อแผนก/งาน" class="w-full rounded-lg border-green-300 focus:ring-green-500" required>
                             </div>
-                            <button type="submit" class="btn-upload bg-green-600 hover:bg-green-700">
+                            <button type="submit" class="custom-btn btn-green">
                                 <i class="fas fa-save"></i> สร้างหน่วยงาน
                             </button>
                         </form>
@@ -289,11 +292,14 @@
                                     <tr class="hover:bg-gray-50 transition">
                                         <td class="px-6 py-4 font-medium text-gray-900">{{ $dept->name }}</td>
                                         <td class="px-6 py-4 text-gray-500">{{ $dept->division->name ?? '-' }}</td>
+                                        
+                                        {{-- 🔥 แก้ไขตรงนี้ครับ: เปลี่ยนนับแบบ Count เป็นนับจาก Database ตรงๆ 🔥 --}}
                                         <td class="px-6 py-4 text-center">
                                             <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-bold">
-                                                {{ $dept->documents_count }} ไฟล์
+                                                {{ $dept->documents->count() }} ไฟล์
                                             </span>
                                         </td>
+
                                         <td class="px-6 py-4 text-center">
                                             <form action="{{ route('departments.destroy', $dept->id) }}" method="POST" onsubmit="return confirm('ลบหน่วยงานนี้?');">
                                                 @csrf @method('DELETE')
@@ -329,7 +335,7 @@
                                 </select>
                             </div>
                             <div class="mt-4 flex justify-end">
-                                <button type="submit" class="btn-upload bg-yellow-600 hover:bg-yellow-700">
+                                <button type="submit" class="custom-btn btn-yellow">
                                     <i class="fas fa-save"></i> บันทึกผู้ใช้งาน
                                 </button>
                             </div>
@@ -391,7 +397,7 @@
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             
-            // เช็คก่อนว่า Element มีอยู่จริงไหม (เผื่อ User ธรรมดาไม่มีสิทธิ์เห็นบาง Tab)
+            // เช็คก่อนว่า Element มีอยู่จริงไหม
             const targetContent = document.getElementById('content-' + tabName);
             const targetBtn = document.getElementById('tab-' + tabName);
 

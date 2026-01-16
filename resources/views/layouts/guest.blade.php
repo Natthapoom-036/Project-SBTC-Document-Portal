@@ -7,6 +7,8 @@
 
         <title>{{ config('app.name', 'Document Management') }}</title>
 
+        <link rel="icon" href="{{ asset('image/sbtcLogo.jpg') }}" type="image/jpeg">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />

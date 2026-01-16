@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>งานเอกสาร วิทยาลัยเทคนิคสิงห์บุรี</title>
+  <link rel="icon" href="{{ asset('image/sbtcLogo.jpg') }}" type="image/jpeg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
   @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -43,7 +44,7 @@
   {{-- Header --}}
   <header class="header">
     <div class="logo-section">
-      <img src="{{ asset('sbtcLogo.jpg') }}" alt="Logo" class="logo">
+      <img src="{{ asset('image/sbtcLogo.jpg') }}" alt="Logo" class="logo">
       <div class="title">
         <h2>ระบบงานเอกสาร</h2>
         <p>วิทยาลัยเทคนิคสิงห์บุรี</p>
@@ -52,7 +53,8 @@
     
     @if (Route::has('login'))
         @auth
-            <a href="{{ route('dashboard') }}" class="login-btn"><i class="fas fa-columns"></i> Dashboard</a>
+            <a href="{{ route('dashboard') }}" class="login-btn"><i class="fas fa-columns"></i>จัดการระบบ</a>
+            
         @else
             <a href="{{ route('login') }}" class="login-btn"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</a>
         @endauth

@@ -94,9 +94,11 @@
     <div class="login-card">
         {{-- 1. ส่วนโลโก้ (ใช้รูปเดียวกับหน้าแรก) --}}
         <div class="logo-area">
-            <img src="{{ asset('image/sbtclogo.jpg') }}" alt="Logo" class="logo-img">
-            <h1 class="app-name">ระบบงานเอกสาร</h1>
-            <p class="app-desc">เข้าสู่ระบบเพื่อจัดการข้อมูล</p>
+            <center>
+                <img src="{{ asset('image/sbtclogo.jpg') }}" alt="Logo" class="logo-img">
+                <h1 class="app-name">ระบบงานเอกสาร</h1>
+                <p class="app-desc">เข้าสู่ระบบเพื่อจัดการข้อมูล</p>
+            </center>
         </div>
 
         {{-- 2. ฟอร์ม Login --}}

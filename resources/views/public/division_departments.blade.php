@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ฝ่ายงานในสังกัด: {{ isset($division) ? $division->name : 'ไม่ระบุ' }}</title>
+  <link rel="icon" href="{{ asset('image/sbtcLogo.jpg') }}" type="image/jpeg">
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />

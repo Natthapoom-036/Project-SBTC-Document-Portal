@@ -6,6 +6,8 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Document Management') }}</title>
+    
+        <link rel="icon" href="{{ asset('image/sbtcLogo.jpg') }}" type="image/jpeg">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
