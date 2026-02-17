@@ -49,7 +49,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('ข้อมูลส่วนบุคคล') }}
+                            {{ __('ข้อมูลส่วนตัว') }}
                         </x-dropdown-link>
 
                         <form method="POST" action="{{ route('logout') }}">
@@ -94,7 +94,7 @@
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('ข้อมูลส่วนบุคคล') }}
+                    {{ __('ข้อมูลส่วนตัว') }}
                 </x-responsive-nav-link>
 
                 <form method="POST" action="{{ route('logout') }}">

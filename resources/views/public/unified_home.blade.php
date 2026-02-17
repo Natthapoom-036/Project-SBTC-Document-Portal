@@ -46,7 +46,7 @@
     <div class="logo-section">
       <img src="{{ asset('image/sbtcLogo.jpg') }}" alt="Logo" class="logo">
       <div class="title">
-        <h2>ระบบงานเอกสาร</h2>
+        <h2>ระบบจัดการเอกสารภายในวิทยาลัยเทคนิคสิงห์บุรี</h2>
         <p>วิทยาลัยเทคนิคสิงห์บุรี</p>
       </div>
     </div>
@@ -63,7 +63,7 @@
 
   {{-- Hero Section --}}
   <main class="hero">
-    <h1>คลังเอกสารวิทยาลัยเทคนิคสิงห์บุรี</h1>
+    <h1>ยินดีต้อนรับเข้าสู่ระบบจัดการเอกสารภายในวิทยาลัยเทคนิคสิงห์บุรี</h1>
     <p>เลือกฝ่ายงานด้านล่างเพื่อเข้าถึงเอกสารที่ต้องการดาวน์โหลด</p>
   </main>
 
@@ -81,7 +81,7 @@
                 <div class="card" onclick="window.location.href='{{ route('divisions.show', $div->id) }}'">
                     <div class="icon"><i class="{{ $div->icon_class ?? 'fas fa-folder' }}"></i></div>
                     <h3>{{ $div->name }}</h3>
-                    <p>{{ $div->description ?? 'คลิกเพื่อดูหน่วยงาน ' }}</p>
+                    <!-- <p>{{ $div->description ?? 'คลิกเพื่อดูหน่วยงาน ' }}</p> -->
                 </div>
                 @endforeach
             @else
@@ -115,7 +115,7 @@
   </div>
 
   <footer class="footer">
-    <p>© {{ date('Y') }} วิทยาลัยเทคนิคสิงห์บุรี | พัฒนาระบบโดย แผนกเทคโนโลยีสารสนเทศ</p>
+    <p>© {{ date('Y') }} วิทยาลัยเทคนิคสิงห์บุรี | พัฒนาระบบโดย แผนกสาขาเทคโนโลยีสารสนเทศ</p>
   </footer>
 
 </body>

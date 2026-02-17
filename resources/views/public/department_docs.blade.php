@@ -55,7 +55,7 @@
                     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                         <div class="p-6">
                             @if($documents->isEmpty())
-                                <p class="text-center text-gray-500 py-4">No documents available for this department.</p>
+                                <p class="text-center text-gray-500 py-4">ไม่มีเอกสารสำหรับแผนกนี้</p>
                             @else
                                 <div class="overflow-x-auto">
                                     <table class="min-w-full divide-y divide-gray-200">
@@ -98,7 +98,7 @@
         <!-- Footer -->
         <footer class="bg-white border-t border-gray-100 py-6">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <p class="text-center text-sm text-gray-500">© {{ date('Y') }} Document Management System. All rights reserved.</p>
+                <p class="text-center text-sm text-gray-500">© {{ date('Y') }} วิทยาลัยเทคนิคสิงห์บุรี | พัฒนาระบบโดย แผนกสาขาเทคโนโลยีสารสนเทศ</p>
             </div>
         </footer>
     </div>
