@@ -9,7 +9,7 @@
                         
                         {{-- 2. ข้อความชื่อระบบ --}}
                         <div class="flex flex-col items-start">
-                            <span class="font-bold text-lg text-indigo-700 leading-tight">ระบบงานเอกสาร</span>
+                            <span class="font-bold text-lg text-indigo-700 leading-tight">ระบบจัดการเอกสารภายในวิทยาลัยเทคนิคสิงห์บุรี</span>
                             <span class="text-xs text-gray-500">วิทยาลัยเทคนิคสิงห์บุรี</span>
                         </div>
                     </a>

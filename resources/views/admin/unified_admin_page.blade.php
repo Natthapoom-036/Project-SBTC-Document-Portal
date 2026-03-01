@@ -293,7 +293,6 @@
                                         <td class="px-6 py-4 font-medium text-gray-900">{{ $dept->name }}</td>
                                         <td class="px-6 py-4 text-gray-500">{{ $dept->division->name ?? '-' }}</td>
                                         
-                                        {{-- 🔥 แก้ไขตรงนี้ครับ: เปลี่ยนนับแบบ Count เป็นนับจาก Database ตรงๆ 🔥 --}}
                                         <td class="px-6 py-4 text-center">
                                             <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-bold">
                                                 {{ $dept->documents->count() }} ไฟล์

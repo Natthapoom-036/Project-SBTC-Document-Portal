@@ -9,7 +9,7 @@
   <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   <style>
-    /* CSS ชุดเดิม (ย่อให้สั้นลงเพื่อความสะดวก) */
+    
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Figtree", "Sarabun", sans-serif; }
     body { background-color: #f3f4f6; color: #1f2937; }
     .header { display: flex; justify-content: space-between; padding: 15px 5%; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
@@ -69,10 +69,10 @@
 
   <div class="section-container">
     
-    {{-- เมนูฝ่ายงาน (Cards) --}}
+    {{-- เมนูฝ่ายงาน --}}
     <div style="margin-bottom: 50px;">
         <h3 style="margin-bottom: 20px; font-size: 1.2rem; color: #374151; font-weight: 600; border-left: 4px solid #2563eb; padding-left: 15px;">
-            หน่วยงานภายใน
+            ฝ่ายงาน
         </h3>
         <div class="card-grid">
             @if(isset($divisions) && $divisions->count() > 0)

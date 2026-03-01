@@ -93,7 +93,7 @@
     <div class="logo-section">
       <img src="{{ asset('image/sbtclogo.jpg') }}" alt="Logo" class="logo">
       <div class="title">
-        <h2>ระบบงานเอกสาร</h2>
+        <h2>ระบบจัดการเอกสารภายในวิทยาลัยเทคนิคสิงห์บุรี</h2>
         <p>วิทยาลัยเทคนิคสิงห์บุรี</p>
       </div>
     </div>
